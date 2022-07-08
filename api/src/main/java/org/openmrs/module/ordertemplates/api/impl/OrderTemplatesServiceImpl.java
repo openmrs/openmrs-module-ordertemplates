@@ -9,44 +9,26 @@
  */
 package org.openmrs.module.ordertemplates.api.impl;
 
-import org.openmrs.api.APIException;
-import org.openmrs.api.UserService;
+import org.openmrs.api.impl.AdministrationServiceImpl;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.ordertemplates.Item;
 import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
 import org.openmrs.module.ordertemplates.api.dao.OrderTemplatesDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.transaction.Transactional;
+
+@Transactional
 public class OrderTemplatesServiceImpl extends BaseOpenmrsService implements OrderTemplatesService {
 	
 	OrderTemplatesDao dao;
 	
-	UserService userService;
+	private static final Logger log = LoggerFactory.getLogger(AdministrationServiceImpl.class);
 	
 	/**
 	 * Injected in moduleApplicationContext.xml
 	 */
 	public void setDao(OrderTemplatesDao dao) {
 		this.dao = dao;
-	}
-	
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-	
-	@Override
-	public Item getItemByUuid(String uuid) throws APIException {
-		return dao.getItemByUuid(uuid);
-	}
-	
-	@Override
-	public Item saveItem(Item item) throws APIException {
-		if (item.getOwner() == null) {
-			item.setOwner(userService.getUser(1));
-		}
-		
-		return dao.saveItem(item);
 	}
 }
