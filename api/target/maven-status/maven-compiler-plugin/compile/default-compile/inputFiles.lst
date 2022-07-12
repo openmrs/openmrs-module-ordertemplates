@@ -1,7 +1,0 @@
-/Users/sam/openmrs-module-ordertemplates/api/src/main/java/org/openmrs/module/ordertemplates/api/OrderTemplatesService.java
-/Users/sam/openmrs-module-ordertemplates/api/src/main/java/org/openmrs/module/ordertemplates/model/OrderTemplate.java
-/Users/sam/openmrs-module-ordertemplates/api/src/main/java/org/openmrs/module/ordertemplates/OrderTemplatesConfig.java
-/Users/sam/openmrs-module-ordertemplates/api/src/main/java/org/openmrs/module/ordertemplates/api/dao/impl/OrderTemplatesDaoImpl.java
-/Users/sam/openmrs-module-ordertemplates/api/src/main/java/org/openmrs/module/ordertemplates/api/dao/OrderTemplatesDao.java
-/Users/sam/openmrs-module-ordertemplates/api/src/main/java/org/openmrs/module/ordertemplates/api/impl/OrderTemplatesServiceImpl.java
-/Users/sam/openmrs-module-ordertemplates/api/src/main/java/org/openmrs/module/ordertemplates/OrderTemplatesActivator.java

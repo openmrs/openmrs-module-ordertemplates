@@ -1,7 +1,0 @@
-org/openmrs/module/ordertemplates/OrderTemplatesActivator.class
-org/openmrs/module/ordertemplates/api/dao/impl/OrderTemplatesDaoImpl.class
-org/openmrs/module/ordertemplates/api/impl/OrderTemplatesServiceImpl.class
-org/openmrs/module/ordertemplates/api/OrderTemplatesService.class
-org/openmrs/module/ordertemplates/OrderTemplatesConfig.class
-org/openmrs/module/ordertemplates/api/dao/OrderTemplatesDao.class
-org/openmrs/module/ordertemplates/model/OrderTemplate.class
