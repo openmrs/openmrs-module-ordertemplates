@@ -9,6 +9,42 @@
  */
 package org.openmrs.module.ordertemplates.api.dao;
 
+import org.openmrs.module.ordertemplates.model.OrderTemplate;
+
+/**
+ * This interface defines database methods for the OrderTemplates domain
+ */
 public interface OrderTemplatesDao {
-	
+
+    /**
+     * Gets an OrderTemplate by id
+     * @param orderTemplateId the OrderTemplate id
+     * @return the OrderTemplate with given id, or null if none exists
+     */
+    OrderTemplate getOrderTemplate(Integer orderTemplateId);
+
+    /**
+     * Gets an OrderTemplate based on the {@code uuid}
+     * @param uuid - uuid of the OrderTemplate to be returned
+     * @return the OrderTemplate
+     */
+    OrderTemplate getOrderTemplateByUuid(Integer uuid);
+
+    /**
+     * Returns all OrderTemplates in the systems
+     * @param includeVoided if false, will limit the results to non-voided templates
+     */
+    OrderTemplate getAllOrderTemplates(boolean includeVoided);
+
+    /**
+     * Saves an instance of an OrderTemplate
+     * @param orderTemplate - the OrderTemplate to be saved
+     */
+    OrderTemplate saveOrderTemplate(OrderTemplate orderTemplate);
+
+    /**
+     * Remove an OrderTemplate from the database
+     * @param orderTemplate - the OrderTemplate to be purged
+     */
+    void deleteOrderTemplate(OrderTemplate orderTemplate);
 }

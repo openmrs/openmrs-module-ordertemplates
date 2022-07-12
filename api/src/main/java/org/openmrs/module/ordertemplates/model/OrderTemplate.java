@@ -1,6 +1,8 @@
 package org.openmrs.module.ordertemplates.model;
 
 import org.openmrs.BaseOpenmrsMetadata;
+import org.openmrs.Concept;
+import org.openmrs.Drug;
 
 import javax.persistence.*;
 
@@ -15,6 +17,17 @@ public class OrderTemplate extends BaseOpenmrsMetadata {
 	@Column(name = "order_template_id")
 	private Integer orderTemplateId;
 	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "concept")
+	private Concept concept;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "drug")
+	private Drug drug;
+
+	@Column(name = "template")
+	private String template;
+
 	@Override
 	public Integer getId() {
 		return orderTemplateId;
@@ -23,5 +36,29 @@ public class OrderTemplate extends BaseOpenmrsMetadata {
 	@Override
 	public void setId(Integer id) {
 		this.orderTemplateId = id;
+	}
+	
+	public Concept getConcept() {
+		return concept;
+	}
+	
+	public void setConcept(Concept concept) {
+		this.concept = concept;
+	}
+	
+	public Drug getDrug() {
+		return drug;
+	}
+	
+	public void setDrug(Drug drug) {
+		this.drug = drug;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 }

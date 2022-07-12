@@ -9,13 +9,8 @@
  */
 package org.openmrs.module.ordertemplates;
 
-import org.springframework.stereotype.Component;
-
-/**
- * Contains module's config.
- */
-@Component("ordertemplates.OrderTemplatesConfig")
-public class OrderTemplatesConfig {
+public class OrderTemplatesConstants {
 	
-	public final static String MODULE_PRIVILEGE = "Order Templates Privilege";
+	public final static String MANAGE_ORDER_TEMPLATES = "Manage OrderTemplates";
+
 }
