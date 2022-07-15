@@ -9,26 +9,53 @@
  */
 package org.openmrs.module.ordertemplates.api.impl;
 
-import org.openmrs.api.impl.AdministrationServiceImpl;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
 import org.openmrs.module.ordertemplates.api.dao.OrderTemplatesDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openmrs.module.ordertemplates.model.OrderTemplate;
 
 import javax.transaction.Transactional;
 
 @Transactional
 public class OrderTemplatesServiceImpl extends BaseOpenmrsService implements OrderTemplatesService {
 	
-	OrderTemplatesDao dao;
+	private OrderTemplatesDao dao;
 	
-	private static final Logger log = LoggerFactory.getLogger(AdministrationServiceImpl.class);
-	
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
 	public void setDao(OrderTemplatesDao dao) {
 		this.dao = dao;
+	}
+	
+	@Override
+	public OrderTemplate getOrderTemplate(Integer orderTemplateId) {
+		return dao.getOrderTemplate(orderTemplateId);
+	}
+	
+	@Override
+	public OrderTemplate getOrderTemplateByUuid(String uuid) {
+		return dao.getOrderTemplateByUuid(uuid);
+	}
+	
+	@Override
+	public OrderTemplate saveOrderTemplate(OrderTemplate orderTemplate) {
+		return dao.saveOrderTemplate(orderTemplate);
+	}
+	
+	@Override
+	public OrderTemplate retireOrderTemplate(OrderTemplate orderTemplate, String reason) {
+		orderTemplate.setRetired(true);
+		orderTemplate.setRetireReason(reason);
+		return dao.saveOrderTemplate(orderTemplate);
+	}
+	
+	@Override
+	public OrderTemplate unRetireOrderTemplate(OrderTemplate orderTemplate) {
+		orderTemplate.setRetired(false);
+		orderTemplate.setRetireReason(null);
+		return dao.saveOrderTemplate(orderTemplate);
+	}
+	
+	@Override
+	public void purgeOrderTemplate(OrderTemplate orderTemplate) {
+		dao.deleteOrderTemplate(orderTemplate);
 	}
 }

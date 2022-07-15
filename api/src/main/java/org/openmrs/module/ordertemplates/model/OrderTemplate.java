@@ -1,5 +1,6 @@
 package org.openmrs.module.ordertemplates.model;
 
+import org.hibernate.annotations.Type;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
@@ -11,7 +12,14 @@ import javax.persistence.*;
 public class OrderTemplate extends BaseOpenmrsMetadata {
 	
 	private static final long serialVersionUID = 1L;
-	
+
+	public OrderTemplate() { }
+
+	public  OrderTemplate(Concept concept, Drug drug) {
+		this.concept = concept;
+		this.drug = drug;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "order_template_id")
@@ -24,10 +32,11 @@ public class OrderTemplate extends BaseOpenmrsMetadata {
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "drug")
 	private Drug drug;
-
+	
 	@Column(name = "template")
+	@Type(type = "text")
 	private String template;
-
+	
 	@Override
 	public Integer getId() {
 		return orderTemplateId;
@@ -53,11 +62,11 @@ public class OrderTemplate extends BaseOpenmrsMetadata {
 	public void setDrug(Drug drug) {
 		this.drug = drug;
 	}
-
+	
 	public String getTemplate() {
 		return template;
 	}
-
+	
 	public void setTemplate(String template) {
 		this.template = template;
 	}

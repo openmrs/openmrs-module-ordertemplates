@@ -41,17 +41,17 @@
             </column>
             <column name="changed_by" type="int" />
             <column name="date_changed" type="datetime" />
-            <column name="voided" type="boolean" defaultValueBoolean="false">
+            <column name="retired" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false" />
             </column>
-            <column name="voided_by" type="int" />
-            <column name="date_voided" type="datetime" />
-            <column name="void_reason" type="varchar(255)" />
+            <column name="retired_by" type="int" />
+            <column name="date_retired" type="datetime" />
+            <column name="retire_reason" type="varchar(255)" />
         </createTable>
         <addForeignKeyConstraint constraintName="order_template_drug_fk" baseTableName="order_template" baseColumnNames="drug" referencedTableName="drug" referencedColumnNames="drug_id"/>
         <addForeignKeyConstraint constraintName="order_template_concept_fk" baseTableName="order_template" baseColumnNames="concept" referencedTableName="concept" referencedColumnNames="concept_id"/>
         <addForeignKeyConstraint constraintName="order_template_creator_fk" baseTableName="order_template" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="order_template_changed_by_fk" baseTableName="order_template" baseColumnNames="changed_by" referencedTableName="users" referencedColumnNames="user_id"/>
-        <addForeignKeyConstraint constraintName="order_template_voided_by_fk" baseTableName="order_template" baseColumnNames="voided_by" referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="order_template_retired_by_fk" baseTableName="order_template" baseColumnNames="retired_by" referencedTableName="users" referencedColumnNames="user_id"/>
     </changeSet>
 </databaseChangeLog>
