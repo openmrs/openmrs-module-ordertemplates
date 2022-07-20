@@ -85,4 +85,25 @@
                             }
                       }'
     />
+    <order_template
+            order_template_id="4"
+            concept="100013"
+            drug="10058"
+            name="Cotrimaxazole 500mg template"
+            creator="1"
+            date_created="2022-07-14 15:34:03.0"
+            retired="false"
+            uuid="e3c6c7d7-700d-48df-84aa-1e935a02c21f"
+            template='{
+                          "dosingType": "org.openmrs.SimpleDosingInstructions",
+                          "instructions": {
+                            "dose": 500,
+                            "doseUnits": "161553AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                            "route": "160240AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                            "frequency": "162249AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                            "asNeeded": true,
+                            "asNeededCondition": "pain"
+                            }
+                      }'
+    />
 </dataset>

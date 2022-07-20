@@ -9,10 +9,15 @@
  */
 package org.openmrs.module.ordertemplates.api;
 
+import org.openmrs.Concept;
+import org.openmrs.Drug;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.ordertemplates.OrderTemplatesConstants;
 import org.openmrs.module.ordertemplates.model.OrderTemplate;
+import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
+
+import java.util.List;
 
 /**
  * This interface defines an API of interacting with {@link OrderTemplate} objects
@@ -36,6 +41,33 @@ public interface OrderTemplatesService extends OpenmrsService {
 	 */
 	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
 	OrderTemplate getOrderTemplateByUuid(String uuid);
+	
+	/**
+	 * Gets OrderTemplates based on the {@code concept}
+	 * 
+	 * @param concept - concept of the OrderTemplate to be returned
+	 * @return the OrderTemplate
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	List<OrderTemplate> getOrderTemplatesByConcept(Concept concept);
+	
+	/**
+	 * Gets OrderTemplates based on the {@code drug}
+	 * 
+	 * @param drug - drug of the OrderTemplate to be returned
+	 * @return the OrderTemplate
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	List<OrderTemplate> getOrderTemplatesByDrug(Drug drug);
+	
+	/**
+	 * Gets all OrderTemplate results that match the given criteria
+	 * 
+	 * @param criteria - the criteria for the returned OrderTemplate results
+	 * @return a list of OrderTemplate
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria criteria);
 	
 	/**
 	 * Saves an instance of an OrderTemplate

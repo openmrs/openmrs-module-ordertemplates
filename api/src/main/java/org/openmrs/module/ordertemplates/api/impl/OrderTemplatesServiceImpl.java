@@ -9,12 +9,16 @@
  */
 package org.openmrs.module.ordertemplates.api.impl;
 
+import org.openmrs.Concept;
+import org.openmrs.Drug;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
 import org.openmrs.module.ordertemplates.api.dao.OrderTemplatesDao;
 import org.openmrs.module.ordertemplates.model.OrderTemplate;
+import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 public class OrderTemplatesServiceImpl extends BaseOpenmrsService implements OrderTemplatesService {
@@ -26,13 +30,33 @@ public class OrderTemplatesServiceImpl extends BaseOpenmrsService implements Ord
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public OrderTemplate getOrderTemplate(Integer orderTemplateId) {
 		return dao.getOrderTemplate(orderTemplateId);
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public OrderTemplate getOrderTemplateByUuid(String uuid) {
 		return dao.getOrderTemplateByUuid(uuid);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderTemplate> getOrderTemplatesByConcept(Concept concept) {
+		return dao.getOrderTemplatesByConcept(concept);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderTemplate> getOrderTemplatesByDrug(Drug drug) {
+		return dao.getOrderTemplatesByDrug(drug);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria criteria) {
+		return dao.getOrderTemplateByCriteria(criteria);
 	}
 	
 	@Override

@@ -3,13 +3,16 @@
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
  * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
- *
+ * <p>
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
 package org.openmrs.module.ordertemplates.api.dao;
 
+import org.openmrs.Concept;
+import org.openmrs.Drug;
 import org.openmrs.module.ordertemplates.model.OrderTemplate;
+import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
 
 import java.util.List;
 
@@ -33,6 +36,30 @@ public interface OrderTemplatesDao {
 	 * @return the OrderTemplate
 	 */
 	OrderTemplate getOrderTemplateByUuid(String uuid);
+	
+	/**
+	 * Gets OrderTemplates based on the {@code drug}
+	 * 
+	 * @param drug - drug of the OrderTemplate to be returned
+	 * @return the OrderTemplates
+	 */
+	List<OrderTemplate> getOrderTemplatesByDrug(Drug drug);
+	
+	/**
+	 * Gets OrderTemplates based on the {@code concept}
+	 * 
+	 * @param concept - concept of the OrderTemplate to be returned
+	 * @return the OrderTemplates
+	 */
+	List<OrderTemplate> getOrderTemplatesByConcept(Concept concept);
+	
+	/**
+	 * Gets all OrderTemplate results that match the given criteria
+	 * 
+	 * @param criteria - the criteria for the returned OrderTemplate results
+	 * @return a list of OrderTemplates
+	 */
+	List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria criteria);
 	
 	/**
 	 * Returns all OrderTemplates in the systems
