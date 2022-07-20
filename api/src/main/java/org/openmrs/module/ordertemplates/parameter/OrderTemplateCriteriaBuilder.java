@@ -4,7 +4,8 @@ import org.openmrs.Concept;
 import org.openmrs.Drug;
 
 /**
- * @author smallGod date: 19/07/2022
+ * @author Arthur D. Mugume, Samuel Male [UCSF]
+ * date: 19/07/2022
  */
 public class OrderTemplateCriteriaBuilder {
 	

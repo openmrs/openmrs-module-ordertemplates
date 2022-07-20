@@ -27,6 +27,9 @@ import static org.hamcrest.Matchers.*;
 
 /**
  * Unit tests for the OrderTemplatesDao
+ *
+ * @author Arthur D. Mugume, Samuel Male [UCSF]
+ * date: 19/07/2022
  */
 public class OrderTemplatesDaoTest extends BaseModuleContextSensitiveTest {
 	
