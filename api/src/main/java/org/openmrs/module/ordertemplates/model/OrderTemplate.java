@@ -12,14 +12,15 @@ import javax.persistence.*;
 public class OrderTemplate extends BaseOpenmrsMetadata {
 	
 	private static final long serialVersionUID = 1L;
-
-	public OrderTemplate() { }
-
-	public  OrderTemplate(Concept concept, Drug drug) {
+	
+	public OrderTemplate() {
+	}
+	
+	public OrderTemplate(Concept concept, Drug drug) {
 		this.concept = concept;
 		this.drug = drug;
 	}
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "order_template_id")
