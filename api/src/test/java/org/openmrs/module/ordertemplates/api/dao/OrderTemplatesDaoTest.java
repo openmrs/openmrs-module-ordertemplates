@@ -27,9 +27,8 @@ import static org.hamcrest.Matchers.*;
 
 /**
  * Unit tests for the OrderTemplatesDao
- *
- * @author Arthur D. Mugume, Samuel Male [UCSF]
- * date: 19/07/2022
+ * 
+ * @author Arthur D. Mugume, Samuel Male [UCSF] date: 19/07/2022
  */
 public class OrderTemplatesDaoTest extends BaseModuleContextSensitiveTest {
 	
@@ -67,17 +66,17 @@ public class OrderTemplatesDaoTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void getAllOrderTemplates_shouldAllOrderTemplates() throws Exception {
 		List<OrderTemplate> existingTemplates = orderTemplatesDao.getAllOrderTemplates(true);
-		assertThat(existingTemplates.size(), is(4));
+		assertThat(existingTemplates.size(), is(6));
 		testOrderTemplate1(existingTemplates.get(0));
 		assertThat(existingTemplates.get(1).getName(), is("Levonorgestrel 1.5mg template"));
 		assertThat(existingTemplates.get(2).getName(), is("Paracetamol 500mg template"));
-		assertThat(existingTemplates.get(2).getRetired(), is(true));
+		assertThat(existingTemplates.get(5).getRetired(), is(true));
 	}
 	
 	@Test
 	public void getAllOrderTemplates_shouldGetAllUnRetiredOrderTemplates() throws Exception {
 		List<OrderTemplate> existingTemplates = orderTemplatesDao.getAllOrderTemplates(false);
-		assertThat(existingTemplates.size(), is(3));
+		assertThat(existingTemplates.size(), is(5));
 		testOrderTemplate1(existingTemplates.get(0));
 		assertThat(existingTemplates.get(1).getName(), is("Levonorgestrel 1.5mg template"));
 	}

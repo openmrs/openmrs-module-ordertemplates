@@ -13,9 +13,8 @@ import java.util.List;
 
 /**
  * Hibernate implementation of the OrderTemplatesDao
- *
- * @author Arthur D. Mugume, Samuel Male [UCSF]
- * date: 20/07/2022
+ * 
+ * @author Arthur D. Mugume, Samuel Male [UCSF] date: 20/07/2022
  */
 public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 	
@@ -75,6 +74,9 @@ public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 		}
 		if (concept != null && concept.getConceptId() != null) {
 			criteria.add(Restrictions.eq("concept", concept));
+		}
+		if (!searchCriteria.isIncludeRetired()) {
+			criteria.add(Restrictions.eq("retired", false));
 		}
 		
 		criteria.addOrder(org.hibernate.criterion.Order.desc("orderTemplateId"));

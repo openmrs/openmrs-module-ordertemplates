@@ -13,8 +13,7 @@ import org.openmrs.Concept;
 import org.openmrs.Drug;
 
 /**
- * @author Arthur D. Mugume, Samuel Male [UCSF]
- * date: 19/07/2022
+ * @author Arthur D. Mugume, Samuel Male [UCSF] date: 19/07/2022
  */
 public class OrderTemplateCriteria {
 	
@@ -22,7 +21,7 @@ public class OrderTemplateCriteria {
 	
 	private Drug drug;
 	
-	private boolean includeVoided = false;
+	private boolean includeRetired = false;
 	
 	public OrderTemplateCriteria() {
 	}
@@ -43,11 +42,11 @@ public class OrderTemplateCriteria {
 		this.drug = drug;
 	}
 	
-	public boolean isIncludeVoided() {
-		return includeVoided;
+	public boolean isIncludeRetired() {
+		return includeRetired;
 	}
 	
-	public void setIncludeVoided(boolean includeVoided) {
-		this.includeVoided = includeVoided;
+	public void setIncludeRetired(boolean includeRetired) {
+		this.includeRetired = includeRetired;
 	}
 }

@@ -28,8 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 /**
- * @author Arthur D. Mugume, Samuel Male
- * date: 22/09/2021
+ * @author Arthur D. Mugume, Samuel Male date: 22/09/2021
  */
 public class OrderTemplatesServiceTest extends BaseModuleContextSensitiveTest {
 	
@@ -58,10 +57,6 @@ public class OrderTemplatesServiceTest extends BaseModuleContextSensitiveTest {
 		builder.setConcept(conceptService.getConcept(100011));
 		List<OrderTemplate> orderTemplates = orderTemplatesService.getOrderTemplateByCriteria(builder.build());
 		assertThat(orderTemplates.size(), is(1));
-		
-		builder.setConcept(conceptService.getConcept(100013));
-		orderTemplates = orderTemplatesService.getOrderTemplateByCriteria(builder.build());
-		assertThat(orderTemplates.size(), is(2));
 	}
 	
 	@Test
@@ -87,5 +82,17 @@ public class OrderTemplatesServiceTest extends BaseModuleContextSensitiveTest {
 		Drug drug = conceptService.getDrug(10055);
 		List<OrderTemplate> orderTemplates = orderTemplatesService.getOrderTemplatesByDrug(drug);
 		assertThat(orderTemplates.size(), is(1));
+	}
+	
+	@Test
+	public void getOrderTemplatesByCriteria_shouldIncludedRetired() {
+		
+		OrderTemplateCriteriaBuilder builder = new OrderTemplateCriteriaBuilder();
+		List<OrderTemplate> orderTemplates = orderTemplatesService.getOrderTemplateByCriteria(builder.build());
+		assertThat(orderTemplates.size(), is(5));
+		
+		builder.setIncludeRetired(true);
+		orderTemplates = orderTemplatesService.getOrderTemplateByCriteria(builder.build());
+		assertThat(orderTemplates.size(), is(6));
 	}
 }
