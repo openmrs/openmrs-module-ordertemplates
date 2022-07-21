@@ -1,0 +1,37 @@
+*.class
+*.iml
+*.idea
+.settings
+.project
+*.sass-cache
+target
+.java-version
+*.releaseBackup
+release.properties
+README.html
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.iml
+
+.settings/*
+**/bin
+**/.classpath
+**/.project
+**/.settings/*
+**/target/*
+
+# OS X auto-generated files #
+.DS_Store
+
+ *.css
+omod/src/main/compass/sass-external/*
+
+# Rubygems build directories #
+omod/.rubygems
+omod/.rubygems-provided
+
+# Bower resources #
+bower_components
