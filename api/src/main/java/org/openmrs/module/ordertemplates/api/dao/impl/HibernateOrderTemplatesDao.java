@@ -1,13 +1,13 @@
-package org.openmrs.module.ordertemplates.web.api.dao.impl;
+package org.openmrs.module.ordertemplates.api.dao.impl;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
+import org.openmrs.module.ordertemplates.api.dao.OrderTemplatesDao;
 import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
-import org.openmrs.module.ordertemplates.web.api.dao.OrderTemplatesDao;
-import org.openmrs.module.ordertemplates.web.model.OrderTemplate;
+import org.openmrs.module.ordertemplates.model.OrderTemplate;
 
 import java.util.List;
 

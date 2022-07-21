@@ -15,8 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
-import org.openmrs.module.ordertemplates.web.api.dao.OrderTemplatesDao;
-import org.openmrs.module.ordertemplates.web.model.OrderTemplate;
+import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 

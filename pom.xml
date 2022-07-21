@@ -92,7 +92,6 @@
 			<version>${openmrsPlatformVersion}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.openmrs.api</groupId>
 			<artifactId>openmrs-api</artifactId>
@@ -100,7 +99,6 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.openmrs.test</groupId>
 			<artifactId>openmrs-test</artifactId>
@@ -108,8 +106,5 @@
 			<version>${openmrsPlatformVersion}</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
-
-
 </project>

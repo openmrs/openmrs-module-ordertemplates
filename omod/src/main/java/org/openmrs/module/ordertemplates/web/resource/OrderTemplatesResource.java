@@ -1,9 +1,13 @@
 package org.openmrs.module.ordertemplates.web.resource;
 
+import org.apache.commons.lang3.StringUtils;
+import org.openmrs.Concept;
+import org.openmrs.Drug;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.ordertemplates.web.api.OrderTemplatesService;
+import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteriaBuilder;
+import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
 import org.openmrs.module.ordertemplates.web.controller.OrderTemplatesRestController;
-import org.openmrs.module.ordertemplates.web.model.OrderTemplate;
+import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -18,6 +22,7 @@ import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOp
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Resource(name = RestConstants.VERSION_1 + OrderTemplatesRestController.ORDER_TEMPLATES_REST_NAMESPACE + "/orderTemplate", supportedClass = OrderTemplate.class, supportedOpenmrsVersions = { "2.0 - 2.*" })
 public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate> {
@@ -118,5 +123,23 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		} else {
 			instance.setTemplate(prop.toString());
 		}
+	}
+	
+	@Override
+	protected PageableResult doSearch(RequestContext requestContext) {
+		Concept concept = null;
+		Drug drug = null;
+		String drugUuid = requestContext.getParameter("drug");
+		String conceptUuid = requestContext.getParameter("concept");
+		if (StringUtils.isNotBlank(drugUuid)) {
+			drug = Context.getConceptService().getDrug(drugUuid);
+		}
+		if (StringUtils.isNotBlank(conceptUuid)) {
+			concept = Context.getConceptService().getConcept(conceptUuid);
+		}
+		OrderTemplateCriteriaBuilder builder = new OrderTemplateCriteriaBuilder();
+		builder.setDrug(drug).setConcept(concept);
+		List<OrderTemplate> orderTemplates = getService().getOrderTemplateByCriteria(builder.build());
+		return new NeedsPaging(orderTemplates, requestContext);
 	}
 }

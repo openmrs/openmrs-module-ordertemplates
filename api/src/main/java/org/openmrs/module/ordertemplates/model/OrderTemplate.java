@@ -1,4 +1,4 @@
-package org.openmrs.module.ordertemplates.web.model;
+package org.openmrs.module.ordertemplates.model;
 
 import org.hibernate.annotations.Type;
 import org.openmrs.BaseOpenmrsMetadata;

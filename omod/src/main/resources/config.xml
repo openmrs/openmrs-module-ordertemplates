@@ -11,7 +11,7 @@
 	<description>
 			${project.parent.description}
 	</description>
-	<activator>org.openmrs.module.ordertemplates.web.OrderTemplatesActivator</activator>
+	<activator>org.openmrs.module.ordertemplates.OrderTemplatesActivator</activator>
 	<require_version>2.0.0</require_version>
 
 	<!-- Required Privileges  -->

@@ -17,8 +17,8 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.PatientService;
 import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteriaBuilder;
-import org.openmrs.module.ordertemplates.web.api.OrderTemplatesService;
-import org.openmrs.module.ordertemplates.web.model.OrderTemplate;
+import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
+import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
