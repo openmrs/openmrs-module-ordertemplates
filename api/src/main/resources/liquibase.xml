@@ -7,7 +7,7 @@
 
     <!-- Create order_template table -->
     <changeSet id="O3-1376-20220713" author="UCSF">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="order_template" />
             </not>
@@ -21,7 +21,7 @@
                 <constraints nullable="false" unique="true" />
             </column>
             <column defaultValue="" name="name" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true" />
             </column>
             <column defaultValue="" name="description" type="varchar(255)">
                 <constraints nullable="false"/>

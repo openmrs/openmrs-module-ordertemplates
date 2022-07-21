@@ -132,10 +132,10 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		String drugUuid = requestContext.getParameter("drug");
 		String conceptUuid = requestContext.getParameter("concept");
 		if (StringUtils.isNotBlank(drugUuid)) {
-			drug = Context.getConceptService().getDrug(drugUuid);
+			drug = Context.getConceptService().getDrugByUuid(drugUuid);
 		}
 		if (StringUtils.isNotBlank(conceptUuid)) {
-			concept = Context.getConceptService().getConcept(conceptUuid);
+			concept = Context.getConceptService().getConceptByUuid(conceptUuid);
 		}
 		OrderTemplateCriteriaBuilder builder = new OrderTemplateCriteriaBuilder();
 		builder.setDrug(drug).setConcept(concept);
