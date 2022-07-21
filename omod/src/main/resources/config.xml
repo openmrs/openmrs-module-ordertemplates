@@ -11,7 +11,7 @@
 	<description>
 			${project.parent.description}
 	</description>
-	<activator>org.openmrs.module.ordertemplates.OrderTemplatesActivator</activator>
+	<activator>org.openmrs.module.ordertemplates.web.OrderTemplatesActivator</activator>
 	<require_version>2.0.0</require_version>
 
 	<!-- Required Privileges  -->
@@ -19,6 +19,10 @@
 		<name>Manage OrderTemplates</name>
 		<description>Base privilege for add/edit/delete order templates</description>
 	</privilege>
+
+	<require_modules>
+		<require_module>org.openmrs.module.webservices.rest</require_module>
+	</require_modules>
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with @MODULE_ID@.* -->

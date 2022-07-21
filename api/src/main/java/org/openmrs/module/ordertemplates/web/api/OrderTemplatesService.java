@@ -7,15 +7,15 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.ordertemplates.api;
+package org.openmrs.module.ordertemplates.web.api;
 
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.ordertemplates.OrderTemplatesConstants;
-import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
+import org.openmrs.module.ordertemplates.web.OrderTemplatesConstants;
+import org.openmrs.module.ordertemplates.web.model.OrderTemplate;
 
 import java.util.List;
 
@@ -68,6 +68,13 @@ public interface OrderTemplatesService extends OpenmrsService {
 	 */
 	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
 	List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria criteria);
+	
+	/**
+	 * Returns all OrderTemplates in the systems
+	 * 
+	 * @param includeRetired if false, will limit the results to non-retired templates
+	 */
+	List<OrderTemplate> getAllOrderTemplates(boolean includeRetired);
 	
 	/**
 	 * Saves an instance of an OrderTemplate

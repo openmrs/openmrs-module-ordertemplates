@@ -7,16 +7,17 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.ordertemplates.api.impl;
+package org.openmrs.module.ordertemplates.web.api.impl;
 
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
-import org.openmrs.module.ordertemplates.api.dao.OrderTemplatesDao;
-import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
 import org.springframework.transaction.annotation.Transactional;
+
+import org.openmrs.module.ordertemplates.web.api.OrderTemplatesService;
+import org.openmrs.module.ordertemplates.web.api.dao.OrderTemplatesDao;
+import org.openmrs.module.ordertemplates.web.model.OrderTemplate;
 
 import java.util.List;
 
@@ -57,6 +58,11 @@ public class OrderTemplatesServiceImpl extends BaseOpenmrsService implements Ord
 	@Transactional(readOnly = true)
 	public List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria criteria) {
 		return dao.getOrderTemplateByCriteria(criteria);
+	}
+	
+	@Override
+	public List<OrderTemplate> getAllOrderTemplates(boolean includeRetired) {
+		return dao.getAllOrderTemplates(includeRetired);
 	}
 	
 	@Override

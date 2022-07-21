@@ -13,21 +13,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
-import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.PatientService;
-import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
-import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteriaBuilder;
+import org.openmrs.module.ordertemplates.web.api.OrderTemplatesService;
+import org.openmrs.module.ordertemplates.web.model.OrderTemplate;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.util.MatcherAssertionErrors.assertThat;
 
 /**
  * @author smallGod date: 22/09/2021

@@ -25,7 +25,7 @@
 
     <context:component-scan base-package="org.openmrs.module.ordertemplates" />
 
-    <bean id="orderTemplatesDao" class="org.openmrs.module.ordertemplates.api.dao.impl.HibernateOrderTemplatesDao">
+    <bean id="orderTemplatesDao" class="org.openmrs.module.ordertemplates.web.api.dao.impl.HibernateOrderTemplatesDao">
         <property name="sessionFactory" ref="dbSessionFactory" />
     </bean>
 
@@ -33,7 +33,7 @@
             class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager" ref="transactionManager" />
         <property name="target">
-            <bean class="org.openmrs.module.ordertemplates.api.impl.OrderTemplatesServiceImpl">
+            <bean class="org.openmrs.module.ordertemplates.web.api.impl.OrderTemplatesServiceImpl">
                 <property name="dao" ref="orderTemplatesDao" />
             </bean>
         </property>
@@ -44,7 +44,7 @@
     <bean parent="serviceContext">
         <property name="moduleService">
             <list>
-                <value>org.openmrs.module.ordertemplates.api.OrderTemplatesService</value>
+                <value>org.openmrs.module.ordertemplates.web.api.OrderTemplatesService</value>
                 <ref bean="orderTemplatesService" />
             </list>
         </property>

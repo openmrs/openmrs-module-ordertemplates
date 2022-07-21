@@ -1,4 +1,4 @@
-package org.openmrs.module.ordertemplates.model;
+package org.openmrs.module.ordertemplates.web.model;
 
 import org.hibernate.annotations.Type;
 import org.openmrs.BaseOpenmrsMetadata;
@@ -70,5 +70,13 @@ public class OrderTemplate extends BaseOpenmrsMetadata {
 	
 	public void setTemplate(String template) {
 		this.template = template;
+	}
+	
+	public Integer getOrderTemplateId() {
+		return orderTemplateId;
+	}
+	
+	public void setOrderTemplateId(Integer orderTemplateId) {
+		this.orderTemplateId = orderTemplateId;
 	}
 }

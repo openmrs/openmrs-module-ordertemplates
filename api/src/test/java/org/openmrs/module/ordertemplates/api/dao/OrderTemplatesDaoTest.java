@@ -15,15 +15,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
-import org.openmrs.module.ordertemplates.api.dao.OrderTemplatesDao;
-import org.openmrs.module.ordertemplates.model.OrderTemplate;
+import org.openmrs.module.ordertemplates.web.api.dao.OrderTemplatesDao;
+import org.openmrs.module.ordertemplates.web.model.OrderTemplate;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 
 /**
  * Unit tests for the OrderTemplatesDao

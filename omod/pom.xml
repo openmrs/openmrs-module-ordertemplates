@@ -13,21 +13,73 @@
 	<description>Omod submodule for Order Templates</description>
 
 	<dependencies>
-        <dependency>
-            <groupId>org.openmrs.module</groupId>
-            <artifactId>ordertemplates-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
+		<!-- Webservices -->
 		<dependency>
-			<groupId>org.openmrs.web</groupId>
-			<artifactId>openmrs-web</artifactId>
-            <scope>provided</scope>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>webservices.rest-omod-common</artifactId>
+			<version>${webservicesRestVersion}</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>webservices.rest-omod-common</artifactId>
+			<version>${webservicesRestVersion}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>webservices.rest-omod-1.8</artifactId>
+			<version>${webservicesRestVersion}</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- API -->
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>ordertemplates-api</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>ordertemplates-api</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<scope>test</scope>
+			<type>test-jar</type>
+		</dependency>
+
+		<!-- OpenMRS -->
+		<dependency>
+			<groupId>org.openmrs.api</groupId>
+			<artifactId>openmrs-api</artifactId>
+			<version>${openmrsPlatformVersion}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.api</groupId>
+			<artifactId>openmrs-api</artifactId>
+			<version>${openmrsPlatformVersion}</version>
+			<type>test-jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
 			<artifactId>openmrs-web</artifactId>
-			<scope>provided</scope>
-			<classifier>tests</classifier>
+			<version>${openmrsPlatformVersion}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.web</groupId>
+			<artifactId>openmrs-web</artifactId>
+			<version>${openmrsPlatformVersion}</version>
+			<type>test-jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.test</groupId>
+			<artifactId>openmrs-test</artifactId>
+			<version>${openmrsPlatformVersion}</version>
+			<type>pom</type>
 		</dependency>
 	</dependencies>
 

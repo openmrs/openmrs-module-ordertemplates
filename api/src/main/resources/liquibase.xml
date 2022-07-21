@@ -6,7 +6,7 @@
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
     <!-- Create order_template table -->
-    <changeSet id="O3-1376-20220712" author="UCSF">
+    <changeSet id="O3-1376-20220713" author="UCSF">
         <preConditions>
             <not>
                 <tableExists tableName="order_template" />
@@ -14,7 +14,7 @@
         </preConditions>
         <comment>Creating order_template table</comment>
         <createTable tableName="order_template">
-            <column name="order_template_id" type="int">
+            <column name="order_template_id" type="int" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true" />
             </column>
             <column name="uuid" type="char(38)">

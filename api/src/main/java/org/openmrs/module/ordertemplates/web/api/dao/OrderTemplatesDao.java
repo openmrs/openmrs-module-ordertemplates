@@ -7,12 +7,12 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.ordertemplates.api.dao;
+package org.openmrs.module.ordertemplates.web.api.dao;
 
 import org.openmrs.Concept;
 import org.openmrs.Drug;
-import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
+import org.openmrs.module.ordertemplates.web.model.OrderTemplate;
 
 import java.util.List;
 

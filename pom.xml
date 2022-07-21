@@ -54,7 +54,8 @@
 
     <properties>
         <openmrsPlatformVersion>2.0.0</openmrsPlatformVersion>
-    </properties>
+		<webservicesRestVersion>2.21.0</webservicesRestVersion>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -110,29 +111,5 @@
 
 	</dependencies>
 
-	<build>
-		<finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>7</source>
-						<target>7</target>
-						<encoding>UTF-8</encoding>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<configuration>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<tagNameFormat>v@{project.version}</tagNameFormat>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
 
 </project>
