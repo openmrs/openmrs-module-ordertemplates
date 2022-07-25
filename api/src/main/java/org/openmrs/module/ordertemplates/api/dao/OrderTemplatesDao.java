@@ -3,35 +3,82 @@
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
  * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
- *
+ * <p>
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
 package org.openmrs.module.ordertemplates.api.dao;
 
-import org.hibernate.criterion.Restrictions;
-import org.openmrs.api.db.hibernate.DbSession;
-import org.openmrs.api.db.hibernate.DbSessionFactory;
-import org.openmrs.module.ordertemplates.Item;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.openmrs.Concept;
+import org.openmrs.Drug;
+import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
+import org.openmrs.module.ordertemplates.model.OrderTemplate;
 
-@Repository("ordertemplates.OrderTemplatesDao")
-public class OrderTemplatesDao {
+import java.util.List;
+
+/**
+ * This interface defines database methods for the OrderTemplates domain
+ */
+public interface OrderTemplatesDao {
 	
-	@Autowired
-	DbSessionFactory sessionFactory;
+	/**
+	 * Gets an OrderTemplate by id
+	 * 
+	 * @param orderTemplateId the OrderTemplate id
+	 * @return the OrderTemplate with given id, or null if none exists
+	 */
+	OrderTemplate getOrderTemplate(Integer orderTemplateId);
 	
-	private DbSession getSession() {
-		return sessionFactory.getCurrentSession();
-	}
+	/**
+	 * Gets an OrderTemplate based on the {@code uuid}
+	 * 
+	 * @param uuid - uuid of the OrderTemplate to be returned
+	 * @return the OrderTemplate
+	 */
+	OrderTemplate getOrderTemplateByUuid(String uuid);
 	
-	public Item getItemByUuid(String uuid) {
-		return (Item) getSession().createCriteria(Item.class).add(Restrictions.eq("uuid", uuid)).uniqueResult();
-	}
+	/**
+	 * Gets OrderTemplates based on the {@code drug}
+	 * 
+	 * @param drug - drug of the OrderTemplate to be returned
+	 * @return the OrderTemplates
+	 */
+	List<OrderTemplate> getOrderTemplatesByDrug(Drug drug);
 	
-	public Item saveItem(Item item) {
-		getSession().saveOrUpdate(item);
-		return item;
-	}
+	/**
+	 * Gets OrderTemplates based on the {@code concept}
+	 * 
+	 * @param concept - concept of the OrderTemplate to be returned
+	 * @return the OrderTemplates
+	 */
+	List<OrderTemplate> getOrderTemplatesByConcept(Concept concept);
+	
+	/**
+	 * Gets all OrderTemplate results that match the given criteria
+	 * 
+	 * @param criteria - the criteria for the returned OrderTemplate results
+	 * @return a list of OrderTemplates
+	 */
+	List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria criteria);
+	
+	/**
+	 * Returns all OrderTemplates in the systems
+	 * 
+	 * @param includeRetired if false, will limit the results to non-retired templates
+	 */
+	List<OrderTemplate> getAllOrderTemplates(boolean includeRetired);
+	
+	/**
+	 * Saves an instance of an OrderTemplate
+	 * 
+	 * @param orderTemplate - the OrderTemplate to be saved
+	 */
+	OrderTemplate saveOrderTemplate(OrderTemplate orderTemplate);
+	
+	/**
+	 * Remove an OrderTemplate from the database
+	 * 
+	 * @param orderTemplate - the OrderTemplate to be purged
+	 */
+	void deleteOrderTemplate(OrderTemplate orderTemplate);
 }

@@ -4,36 +4,54 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
- 
-    <!--
-    	See http://wiki.openmrs.org/display/docs/Module+liquibase+File for 
-    	documentation on this file.
-    
-        See http://www.liquibase.org/manual/home#available_database_refactorings
-        for a list of supported elements and attributes
-    -->
- 
- 	<!-- Uncomment the changeset below if you want to make the Item class persistable, see also Item and OrderTemplatesDaoTest -->
- 	<!--
-	<changeSet id="ordertemplates-2016-08-02-12-21" author="raff">
-		<preConditions onFail="MARK_RAN">
-			<not><tableExists tableName="ordertemplates_item"/></not>
-		</preConditions>
-		<comment>
-			Creating the ordertemplates_item table
-		</comment>
-		<createTable tableName="ordertemplates_item">
-			<column name="ordertemplates_item_id" type="int" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false"/>
-			</column>
-			<column name="uuid" type="char(38)">
-				<constraints nullable="false" unique="true"></constraints>
-			</column>
-			<column name="owner" type="int" />
-			<column name="description" type="varchar(255)" />
-		</createTable>
-        <addForeignKeyConstraint constraintName="ordertemplates_item_owner_fk" baseTableName="ordertemplates_item" baseColumnNames="owner"  referencedTableName="users"
-                                 referencedColumnNames="user_id" />
-    </changeSet> -->
- 
+
+    <!-- Create order_template table -->
+    <changeSet id="O3-1376-20220713" author="UCSF">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="order_template" />
+            </not>
+        </preConditions>
+        <comment>Creating order_template table</comment>
+        <createTable tableName="order_template">
+            <column name="order_template_id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column defaultValue="" name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column defaultValue="" name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="concept" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="drug" type="int" />
+            <column name="template" type="text">
+                <constraints nullable="false" />
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="changed_by" type="int" />
+            <column name="date_changed" type="datetime" />
+            <column name="retired" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false" />
+            </column>
+            <column name="retired_by" type="int" />
+            <column name="date_retired" type="datetime" />
+            <column name="retire_reason" type="varchar(255)" />
+        </createTable>
+        <addForeignKeyConstraint constraintName="order_template_drug_fk" baseTableName="order_template" baseColumnNames="drug" referencedTableName="drug" referencedColumnNames="drug_id"/>
+        <addForeignKeyConstraint constraintName="order_template_concept_fk" baseTableName="order_template" baseColumnNames="concept" referencedTableName="concept" referencedColumnNames="concept_id"/>
+        <addForeignKeyConstraint constraintName="order_template_creator_fk" baseTableName="order_template" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="order_template_changed_by_fk" baseTableName="order_template" baseColumnNames="changed_by" referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="order_template_retired_by_fk" baseTableName="order_template" baseColumnNames="retired_by" referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
 </databaseChangeLog>

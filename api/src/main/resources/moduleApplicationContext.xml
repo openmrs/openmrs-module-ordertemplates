@@ -25,33 +25,27 @@
 
     <context:component-scan base-package="org.openmrs.module.ordertemplates" />
 
-    <!-- Wraps OrderTemplatesService methods in DB transactions and OpenMRS interceptors,
-    which set audit info like dateCreated, changedBy, etc.-->
-    <bean id="ordertemplates.OrderTemplatesService"
-            class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-        <property name="transactionManager">
-            <ref bean="transactionManager" />
-        </property>
-        <property name="target">
-            <bean class="org.openmrs.module.ordertemplates.api.impl.OrderTemplatesServiceImpl">
-                <property name="dao" ref="ordertemplates.OrderTemplatesDao" />
-            </bean>
-        </property>
-        <property name="preInterceptors">
-            <ref bean="serviceInterceptors" />
-        </property>
-        <property name="transactionAttributeSource">
-            <ref bean="transactionAttributeSource" />
-        </property>
+    <bean id="orderTemplatesDao" class="org.openmrs.module.ordertemplates.api.dao.impl.HibernateOrderTemplatesDao">
+        <property name="sessionFactory" ref="dbSessionFactory" />
     </bean>
 
-    <!-- Adds OrderTemplatesService to OpenMRS context so it can be accessed
-    calling Context.getService(OrderTemplatesService.class) -->
+    <bean id="orderTemplatesService"
+            class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.ordertemplates.api.impl.OrderTemplatesServiceImpl">
+                <property name="dao" ref="orderTemplatesDao" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+
     <bean parent="serviceContext">
         <property name="moduleService">
             <list>
                 <value>org.openmrs.module.ordertemplates.api.OrderTemplatesService</value>
-                <ref bean="ordertemplates.OrderTemplatesService" />
+                <ref bean="orderTemplatesService" />
             </list>
         </property>
     </bean>

@@ -9,44 +9,86 @@
  */
 package org.openmrs.module.ordertemplates.api.impl;
 
-import org.openmrs.api.APIException;
-import org.openmrs.api.UserService;
+import org.openmrs.Concept;
+import org.openmrs.Drug;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.ordertemplates.Item;
 import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
 import org.openmrs.module.ordertemplates.api.dao.OrderTemplatesDao;
+import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
+import org.springframework.transaction.annotation.Transactional;
 
+import org.openmrs.module.ordertemplates.model.OrderTemplate;
+
+import java.util.List;
+
+/**
+ * @author Arthur D. Mugume, Samuel Male [UCSF] date: 19/07/2022
+ */
+@Transactional
 public class OrderTemplatesServiceImpl extends BaseOpenmrsService implements OrderTemplatesService {
 	
-	OrderTemplatesDao dao;
+	private OrderTemplatesDao dao;
 	
-	UserService userService;
-	
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
 	public void setDao(OrderTemplatesDao dao) {
 		this.dao = dao;
 	}
 	
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
-	public void setUserService(UserService userService) {
-		this.userService = userService;
+	@Override
+	@Transactional(readOnly = true)
+	public OrderTemplate getOrderTemplate(Integer orderTemplateId) {
+		return dao.getOrderTemplate(orderTemplateId);
 	}
 	
 	@Override
-	public Item getItemByUuid(String uuid) throws APIException {
-		return dao.getItemByUuid(uuid);
+	@Transactional(readOnly = true)
+	public OrderTemplate getOrderTemplateByUuid(String uuid) {
+		return dao.getOrderTemplateByUuid(uuid);
 	}
 	
 	@Override
-	public Item saveItem(Item item) throws APIException {
-		if (item.getOwner() == null) {
-			item.setOwner(userService.getUser(1));
-		}
-		
-		return dao.saveItem(item);
+	@Transactional(readOnly = true)
+	public List<OrderTemplate> getOrderTemplatesByConcept(Concept concept) {
+		return dao.getOrderTemplatesByConcept(concept);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderTemplate> getOrderTemplatesByDrug(Drug drug) {
+		return dao.getOrderTemplatesByDrug(drug);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria criteria) {
+		return dao.getOrderTemplateByCriteria(criteria);
+	}
+	
+	@Override
+	public List<OrderTemplate> getAllOrderTemplates(boolean includeRetired) {
+		return dao.getAllOrderTemplates(includeRetired);
+	}
+	
+	@Override
+	public OrderTemplate saveOrderTemplate(OrderTemplate orderTemplate) {
+		return dao.saveOrderTemplate(orderTemplate);
+	}
+	
+	@Override
+	public OrderTemplate retireOrderTemplate(OrderTemplate orderTemplate, String reason) {
+		orderTemplate.setRetired(true);
+		orderTemplate.setRetireReason(reason);
+		return dao.saveOrderTemplate(orderTemplate);
+	}
+	
+	@Override
+	public OrderTemplate unRetireOrderTemplate(OrderTemplate orderTemplate) {
+		orderTemplate.setRetired(false);
+		orderTemplate.setRetireReason(null);
+		return dao.saveOrderTemplate(orderTemplate);
+	}
+	
+	@Override
+	public void purgeOrderTemplate(OrderTemplate orderTemplate) {
+		dao.deleteOrderTemplate(orderTemplate);
 	}
 }

@@ -9,40 +9,105 @@
  */
 package org.openmrs.module.ordertemplates.api;
 
+import org.openmrs.Concept;
+import org.openmrs.Drug;
 import org.openmrs.annotation.Authorized;
-import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.ordertemplates.OrderTemplatesConfig;
-import org.openmrs.module.ordertemplates.Item;
-import org.springframework.transaction.annotation.Transactional;
+import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
+import org.openmrs.module.ordertemplates.OrderTemplatesConstants;
+import org.openmrs.module.ordertemplates.model.OrderTemplate;
+
+import java.util.List;
 
 /**
- * The main service of this module, which is exposed for other modules. See
- * moduleApplicationContext.xml on how it is wired up.
+ * This interface defines an API of interacting with {@link OrderTemplate} objects
  */
 public interface OrderTemplatesService extends OpenmrsService {
 	
 	/**
-	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
-	 * only transaction.
+	 * Gets an OrderTemplate by id
 	 * 
-	 * @param uuid
-	 * @return
-	 * @throws APIException
+	 * @param orderTemplateId the OrderTemplate id
+	 * @return the OrderTemplate with given id, or null if none exists
 	 */
-	@Authorized()
-	@Transactional(readOnly = true)
-	Item getItemByUuid(String uuid) throws APIException;
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	OrderTemplate getOrderTemplate(Integer orderTemplateId);
 	
 	/**
-	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
-	 * this module's privilege. It is executed in a transaction.
+	 * Gets an OrderTemplate based on the {@code uuid}
 	 * 
-	 * @param item
-	 * @return
-	 * @throws APIException
+	 * @param uuid - uuid of the OrderTemplate to be returned
+	 * @return the OrderTemplate
 	 */
-	@Authorized(OrderTemplatesConfig.MODULE_PRIVILEGE)
-	@Transactional
-	Item saveItem(Item item) throws APIException;
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	OrderTemplate getOrderTemplateByUuid(String uuid);
+	
+	/**
+	 * Gets OrderTemplates based on the {@code concept}
+	 * 
+	 * @param concept - concept of the OrderTemplate to be returned
+	 * @return the OrderTemplate
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	List<OrderTemplate> getOrderTemplatesByConcept(Concept concept);
+	
+	/**
+	 * Gets OrderTemplates based on the {@code drug}
+	 * 
+	 * @param drug - drug of the OrderTemplate to be returned
+	 * @return the OrderTemplate
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	List<OrderTemplate> getOrderTemplatesByDrug(Drug drug);
+	
+	/**
+	 * Gets all OrderTemplate results that match the given criteria
+	 * 
+	 * @param criteria - the criteria for the returned OrderTemplate results
+	 * @return a list of OrderTemplate
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria criteria);
+	
+	/**
+	 * Returns all OrderTemplates in the systems
+	 * 
+	 * @param includeRetired if false, will limit the results to non-retired templates
+	 */
+	List<OrderTemplate> getAllOrderTemplates(boolean includeRetired);
+	
+	/**
+	 * Saves an instance of an OrderTemplate
+	 * 
+	 * @param orderTemplate - the OrderTemplate to be saved
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	OrderTemplate saveOrderTemplate(OrderTemplate orderTemplate);
+	
+	/**
+	 * Retires a OrderTemplate
+	 * 
+	 * @param orderTemplate - OrderTemplate to be retired
+	 * @param reason - the reason for voiding the OrderTemplate
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	OrderTemplate retireOrderTemplate(OrderTemplate orderTemplate, String reason);
+	
+	/**
+	 * Un-retire a previously retired OrderTemplate
+	 * 
+	 * @param orderTemplate - OrderTemplate to be un-retired
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	OrderTemplate unRetireOrderTemplate(OrderTemplate orderTemplate);
+	
+	/**
+	 * Completely remove an OrderTemplate from the persistent storage. This should be called with
+	 * caution because we don't want to lose data. For most cases the data <i>should</i> just be
+	 * voided (see #retireOrderTemplate(orderTemplate, reason))
+	 * 
+	 * @param orderTemplate - the OrderTemplate to be purged
+	 */
+	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	void purgeOrderTemplate(OrderTemplate orderTemplate);
 }
