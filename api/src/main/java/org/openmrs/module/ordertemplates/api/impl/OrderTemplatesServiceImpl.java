@@ -21,6 +21,9 @@ import org.openmrs.module.ordertemplates.model.OrderTemplate;
 
 import java.util.List;
 
+/**
+ * @author Arthur D. Mugume, Samuel Male [UCSF] date: 19/07/2022
+ */
 @Transactional
 public class OrderTemplatesServiceImpl extends BaseOpenmrsService implements OrderTemplatesService {
 	
