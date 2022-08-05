@@ -34,7 +34,7 @@ public class OrderTemplate extends BaseOpenmrsMetadata {
 	@JoinColumn(name = "drug")
 	private Drug drug;
 	
-	@Column(name = "template")
+	@Column(name = "template", length = 10000)
 	@Type(type = "text")
 	private String template;
 	
