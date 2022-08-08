@@ -1,6 +1,9 @@
 package org.openmrs.module.ordertemplates.web.resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.api.context.Context;
@@ -21,8 +24,11 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+
+import javax.validation.constraints.NotNull;
 
 @Resource(name = RestConstants.VERSION_1 + OrderTemplatesRestController.ORDER_TEMPLATES_REST_NAMESPACE + "/orderTemplate", supportedClass = OrderTemplate.class, supportedOpenmrsVersions = { "2.0 - 2.*" })
 public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate> {
@@ -117,11 +123,15 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 	}
 	
 	@PropertySetter("template")
-	public void setTemplate(OrderTemplate instance, Object prop) {
+	public void setTemplate(OrderTemplate instance, Object prop) throws JsonGenerationException, JsonMappingException,
+	        IOException {
 		if (prop instanceof String) {
 			instance.setTemplate((String) prop);
+		} else if (prop instanceof Map) {
+			instance.setTemplate(new ObjectMapper().writeValueAsString(prop));
 		} else {
 			instance.setTemplate(prop.toString());
+			
 		}
 	}
 	
