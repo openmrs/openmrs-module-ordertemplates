@@ -89,6 +89,7 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		resourceDescription.addProperty("name");
 		resourceDescription.addProperty("description");
 		resourceDescription.addProperty("template");
+		resourceDescription.addProperty("retired");
 	}
 	
 	@Override
@@ -100,6 +101,7 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		resourceDescription.addProperty("uuid");
 		resourceDescription.addProperty("drug");
 		resourceDescription.addProperty("concept");
+		resourceDescription.addProperty("retired");
 		return resourceDescription;
 	}
 	
