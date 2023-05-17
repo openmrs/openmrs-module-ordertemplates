@@ -30,7 +30,7 @@ public interface OrderTemplatesService extends OpenmrsService {
 	 * @param orderTemplateId the OrderTemplate id
 	 * @return the OrderTemplate with given id, or null if none exists
 	 */
-	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	@Authorized({ OrderTemplatesConstants.VIEW_ORDER_TEMPLATES })
 	OrderTemplate getOrderTemplate(Integer orderTemplateId);
 	
 	/**
@@ -39,7 +39,7 @@ public interface OrderTemplatesService extends OpenmrsService {
 	 * @param uuid - uuid of the OrderTemplate to be returned
 	 * @return the OrderTemplate
 	 */
-	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	@Authorized({ OrderTemplatesConstants.VIEW_ORDER_TEMPLATES })
 	OrderTemplate getOrderTemplateByUuid(String uuid);
 	
 	/**
@@ -48,7 +48,7 @@ public interface OrderTemplatesService extends OpenmrsService {
 	 * @param concept - concept of the OrderTemplate to be returned
 	 * @return the OrderTemplate
 	 */
-	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	@Authorized({ OrderTemplatesConstants.VIEW_ORDER_TEMPLATES })
 	List<OrderTemplate> getOrderTemplatesByConcept(Concept concept);
 	
 	/**
@@ -57,7 +57,7 @@ public interface OrderTemplatesService extends OpenmrsService {
 	 * @param drug - drug of the OrderTemplate to be returned
 	 * @return the OrderTemplate
 	 */
-	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	@Authorized({ OrderTemplatesConstants.VIEW_ORDER_TEMPLATES })
 	List<OrderTemplate> getOrderTemplatesByDrug(Drug drug);
 	
 	/**
@@ -66,7 +66,7 @@ public interface OrderTemplatesService extends OpenmrsService {
 	 * @param criteria - the criteria for the returned OrderTemplate results
 	 * @return a list of OrderTemplate
 	 */
-	@Authorized({ OrderTemplatesConstants.MANAGE_ORDER_TEMPLATES })
+	@Authorized({ OrderTemplatesConstants.VIEW_ORDER_TEMPLATES })
 	List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria criteria);
 	
 	/**
@@ -74,6 +74,7 @@ public interface OrderTemplatesService extends OpenmrsService {
 	 * 
 	 * @param includeRetired if false, will limit the results to non-retired templates
 	 */
+	@Authorized({ OrderTemplatesConstants.VIEW_ORDER_TEMPLATES })
 	List<OrderTemplate> getAllOrderTemplates(boolean includeRetired);
 	
 	/**
