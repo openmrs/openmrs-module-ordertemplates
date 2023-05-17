@@ -12,6 +12,7 @@ package org.openmrs.module.ordertemplates;
 public class OrderTemplatesConstants {
 	
 	public final static String MANAGE_ORDER_TEMPLATES = "Manage OrderTemplates";
+	
 	public final static String VIEW_ORDER_TEMPLATES = "View OrderTemplates";
 	
 }
