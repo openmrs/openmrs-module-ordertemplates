@@ -1,5 +1,10 @@
 package org.openmrs.module.ordertemplates.web.resource;
 
+import io.swagger.models.Model;
+import io.swagger.models.ModelImpl;
+import io.swagger.models.properties.BooleanProperty;
+import io.swagger.models.properties.RefProperty;
+import io.swagger.models.properties.StringProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -37,7 +42,7 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 	public OrderTemplate getByUniqueId(@NotNull String uuid) {
 		return getService().getOrderTemplateByUuid(uuid);
 	}
-	
+
 	@Override
 	protected void delete(OrderTemplate orderTemplate, String retireReason, RequestContext requestContext)
 	        throws ResponseException {
@@ -81,7 +86,37 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		}
 		return resourceDescription;
 	}
-	
+
+	@Override
+	public Model getGETModel(Representation rep) {
+		ModelImpl  model = (ModelImpl) super.getGETModel(rep);
+		if (rep instanceof RefRepresentation) {
+			addSharedModelProperties(model);
+			model.property("drug", new RefProperty("#/definitions/DrugGetRef"));
+			model.property("concept", new RefProperty("#/definitions/ConceptGetRef"));
+		} else if (rep instanceof DefaultRepresentation) {
+			addSharedModelProperties(model);
+			model.property("drug", new RefProperty("#/definitions/DrugGet"));
+			model.property("concept", new RefProperty("#/definitions/ConceptGet"));
+		} else if (rep instanceof FullRepresentation) {
+			addSharedModelProperties(model);
+			model.property("drug", new RefProperty("#/definitions/DrugGetFull"));
+			model.property("concept", new RefProperty("#/definitions/ConceptGetFull"));
+		} else if (rep instanceof CustomRepresentation) {
+			model = null;
+		}
+		return model;
+	}
+
+	private void addSharedModelProperties(ModelImpl model) {
+		model.property("uuid", new StringProperty().example("uuid"));
+		model.property("display", new StringProperty());
+		model.property("name", new StringProperty());
+		model.property("description", new StringProperty());
+		model.property("template", new StringProperty());
+		model.property("retired", new BooleanProperty());
+	}
+
 	private void addSharedResourceDescriptionProperties(DelegatingResourceDescription resourceDescription) {
 		resourceDescription.addSelfLink();
 		resourceDescription.addProperty("uuid");
@@ -104,10 +139,24 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		resourceDescription.addProperty("retired");
 		return resourceDescription;
 	}
+
+	@Override
+	public Model getCREATEModel(Representation rep) {
+		ModelImpl model = (ModelImpl) super.getCREATEModel(rep);
+		addSharedModelProperties(model);
+		model.property("drug", new RefProperty("#/definitions/DrugCreate"));
+		model.property("concept", new RefProperty("#/definitions/ConceptCreate"));
+		return model;
+	}
 	
 	@Override
 	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
 		return this.getCreatableProperties();
+	}
+
+	@Override
+	public Model getUPDATEModel(Representation rep) {
+		return getCREATEModel(rep);
 	}
 	
 	@Override
