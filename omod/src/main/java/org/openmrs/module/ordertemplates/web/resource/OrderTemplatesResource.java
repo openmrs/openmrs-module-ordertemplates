@@ -40,7 +40,7 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 	public OrderTemplate getByUniqueId(@NotNull String uuid) {
 		return getService().getOrderTemplateByUuid(uuid);
 	}
-
+	
 	@Override
 	protected void delete(OrderTemplate orderTemplate, String retireReason, RequestContext requestContext)
 	        throws ResponseException {
@@ -84,37 +84,34 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		}
 		return resourceDescription;
 	}
-
+	
 	@Override
 	public Schema<?> getGETSchema(Representation rep) {
 		Schema<?> model = super.getGETSchema(rep);
 		if (rep instanceof RefRepresentation) {
 			addSharedModelProperties(model);
-			model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugGetRef"))
-					.addProperty("concept", new Schema<Concept>().$ref("#/components/schemas/ConceptGetRef"));
+			model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugGetRef")).addProperty("concept",
+			    new Schema<Concept>().$ref("#/components/schemas/ConceptGetRef"));
 		} else if (rep instanceof DefaultRepresentation) {
 			addSharedModelProperties(model);
-			model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugGet"))
-					.addProperty("concept", new Schema<Concept>().$ref("#/components/schemas/ConceptGet"));
+			model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugGet")).addProperty("concept",
+			    new Schema<Concept>().$ref("#/components/schemas/ConceptGet"));
 		} else if (rep instanceof FullRepresentation) {
 			addSharedModelProperties(model);
-			model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugGetFull"))
-					.addProperty("concept", new Schema<Concept>().$ref("#/components/schemas/ConceptGetFull"));
+			model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugGetFull")).addProperty("concept",
+			    new Schema<Concept>().$ref("#/components/schemas/ConceptGetFull"));
 		} else if (rep instanceof CustomRepresentation) {
 			model = null;
 		}
 		return model;
 	}
-
+	
 	private void addSharedModelProperties(Schema<?> model) {
-		model.addProperty("uuid", new StringSchema().example("uuid"))
-				.addProperty("display", new StringSchema())
-				.addProperty("name", new StringSchema())
-				.addProperty("description", new StringSchema())
-				.addProperty("template", new StringSchema())
-				.addProperty("retired", new BooleanSchema());
+		model.addProperty("uuid", new StringSchema().example("uuid")).addProperty("display", new StringSchema())
+		        .addProperty("name", new StringSchema()).addProperty("description", new StringSchema())
+		        .addProperty("template", new StringSchema()).addProperty("retired", new BooleanSchema());
 	}
-
+	
 	private void addSharedResourceDescriptionProperties(DelegatingResourceDescription resourceDescription) {
 		resourceDescription.addSelfLink();
 		resourceDescription.addProperty("uuid");
@@ -137,13 +134,13 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		resourceDescription.addProperty("retired");
 		return resourceDescription;
 	}
-
+	
 	@Override
 	public Schema<?> getCREATESchema(Representation rep) {
 		Schema<?> model = super.getCREATESchema(rep);
 		addSharedModelProperties(model);
-		model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugCreate"))
-				.addProperty("concept", new Schema<Concept>().$ref("#/components/schemas/ConceptCreate"));
+		model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugCreate")).addProperty("concept",
+		    new Schema<Concept>().$ref("#/components/schemas/ConceptCreate"));
 		return model;
 	}
 
@@ -151,7 +148,7 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
 		return this.getCreatableProperties();
 	}
-
+	
 	@Override
 	public Schema<?> getUPDATESchema(Representation rep) {
 		return getCREATESchema(rep);
