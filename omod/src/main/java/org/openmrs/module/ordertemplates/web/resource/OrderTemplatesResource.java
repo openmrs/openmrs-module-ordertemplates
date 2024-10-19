@@ -1,10 +1,8 @@
 package org.openmrs.module.ordertemplates.web.resource;
 
-import io.swagger.models.Model;
-import io.swagger.models.ModelImpl;
-import io.swagger.models.properties.BooleanProperty;
-import io.swagger.models.properties.RefProperty;
-import io.swagger.models.properties.StringProperty;
+import io.swagger.v3.oas.models.media.BooleanSchema;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -88,33 +86,33 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 	}
 
 	@Override
-	public Model getGETModel(Representation rep) {
-		ModelImpl  model = (ModelImpl) super.getGETModel(rep);
+	public Schema<?> getGETSchema(Representation rep) {
+		Schema<?> model = super.getGETSchema(rep);
 		if (rep instanceof RefRepresentation) {
 			addSharedModelProperties(model);
-			model.property("drug", new RefProperty("#/definitions/DrugGetRef"));
-			model.property("concept", new RefProperty("#/definitions/ConceptGetRef"));
+			model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugGetRef"))
+					.addProperty("concept", new Schema<Concept>().$ref("#/components/schemas/ConceptGetRef"));
 		} else if (rep instanceof DefaultRepresentation) {
 			addSharedModelProperties(model);
-			model.property("drug", new RefProperty("#/definitions/DrugGet"));
-			model.property("concept", new RefProperty("#/definitions/ConceptGet"));
+			model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugGet"))
+					.addProperty("concept", new Schema<Concept>().$ref("#/components/schemas/ConceptGet"));
 		} else if (rep instanceof FullRepresentation) {
 			addSharedModelProperties(model);
-			model.property("drug", new RefProperty("#/definitions/DrugGetFull"));
-			model.property("concept", new RefProperty("#/definitions/ConceptGetFull"));
+			model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugGetFull"))
+					.addProperty("concept", new Schema<Concept>().$ref("#/components/schemas/ConceptGetFull"));
 		} else if (rep instanceof CustomRepresentation) {
 			model = null;
 		}
 		return model;
 	}
 
-	private void addSharedModelProperties(ModelImpl model) {
-		model.property("uuid", new StringProperty().example("uuid"));
-		model.property("display", new StringProperty());
-		model.property("name", new StringProperty());
-		model.property("description", new StringProperty());
-		model.property("template", new StringProperty());
-		model.property("retired", new BooleanProperty());
+	private void addSharedModelProperties(Schema<?> model) {
+		model.addProperty("uuid", new StringSchema().example("uuid"))
+				.addProperty("display", new StringSchema())
+				.addProperty("name", new StringSchema())
+				.addProperty("description", new StringSchema())
+				.addProperty("template", new StringSchema())
+				.addProperty("retired", new BooleanSchema());
 	}
 
 	private void addSharedResourceDescriptionProperties(DelegatingResourceDescription resourceDescription) {
@@ -141,24 +139,24 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 	}
 
 	@Override
-	public Model getCREATEModel(Representation rep) {
-		ModelImpl model = (ModelImpl) super.getCREATEModel(rep);
+	public Schema<?> getCREATESchema(Representation rep) {
+		Schema<?> model = super.getCREATESchema(rep);
 		addSharedModelProperties(model);
-		model.property("drug", new RefProperty("#/definitions/DrugCreate"));
-		model.property("concept", new RefProperty("#/definitions/ConceptCreate"));
+		model.addProperty("drug", new Schema<Drug>().$ref("#/components/schemas/DrugCreate"))
+				.addProperty("concept", new Schema<Concept>().$ref("#/components/schemas/ConceptCreate"));
 		return model;
 	}
-	
+
 	@Override
 	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
 		return this.getCreatableProperties();
 	}
 
 	@Override
-	public Model getUPDATEModel(Representation rep) {
-		return getCREATEModel(rep);
+	public Schema<?> getUPDATESchema(Representation rep) {
+		return getCREATESchema(rep);
 	}
-	
+
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
 		return new NeedsPaging<OrderTemplate>(getService().getAllOrderTemplates(context.getIncludeAll()), context);
