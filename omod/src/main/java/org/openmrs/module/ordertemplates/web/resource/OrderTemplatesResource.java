@@ -143,7 +143,7 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		    new Schema<Concept>().$ref("#/components/schemas/ConceptCreate"));
 		return model;
 	}
-
+	
 	@Override
 	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
 		return this.getCreatableProperties();
@@ -153,7 +153,7 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 	public Schema<?> getUPDATESchema(Representation rep) {
 		return getCREATESchema(rep);
 	}
-
+	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
 		return new NeedsPaging<OrderTemplate>(getService().getAllOrderTemplates(context.getIncludeAll()), context);
