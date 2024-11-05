@@ -54,7 +54,7 @@
 
     <properties>
         <openmrsPlatformVersion>2.0.0</openmrsPlatformVersion>
-		<webservicesRestVersion>2.21.0</webservicesRestVersion>
+		<webservicesRestVersion>2.46.0-SNAPSHOT</webservicesRestVersion>
 	</properties>
 
 	<dependencies>
