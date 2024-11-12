@@ -24,6 +24,7 @@ import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
+import org.openmrs.module.webservices.rest.web.response.ConversionException;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
@@ -196,6 +197,35 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		OrderTemplateCriteriaBuilder builder = new OrderTemplateCriteriaBuilder();
 		builder.setDrug(drug).setConcept(concept);
 		List<OrderTemplate> orderTemplates = getService().getOrderTemplateByCriteria(builder.build());
-		return new NeedsPaging(orderTemplates, requestContext);
+		return new NeedsPaging<>(orderTemplates, requestContext);
+	}
+	
+	@Override
+	public Object getProperty(OrderTemplate instance, String propertyName) throws ConversionException {
+		if ("drug".equals(propertyName)) {
+			return instance.getDrug();
+		}
+		return super.getProperty(instance, propertyName);
+	}
+	
+	@Override
+	public void setProperty(Object instance, String propertyName, Object value) throws ConversionException {
+		if ("drug".equals(propertyName)) {
+			OrderTemplate orderTemplate = (OrderTemplate) instance;
+			if (value == null) {
+				orderTemplate.setDrug(null);
+			} else if (value instanceof Drug) {
+				orderTemplate.setDrug((Drug) value);
+			} else {
+				// Assuming value is a String UUID
+				Drug drug = Context.getConceptService().getDrugByUuid((String) value);
+				if (drug == null) {
+					throw new ConversionException("Drug with UUID " + value + " does not exist");
+				}
+				orderTemplate.setDrug(drug);
+			}
+		} else {
+			super.setProperty(instance, propertyName, value);
+		}
 	}
 }
