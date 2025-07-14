@@ -20,6 +20,11 @@
 		<description>Base privilege for add/edit/delete order templates</description>
 	</privilege>
 
+	<privilege>
+		<name>View OrderTemplates</name>
+		<description>Base privilege for view  order templates</description>
+	</privilege>
+
 	<require_modules>
 		<require_module>org.openmrs.module.webservices.rest</require_module>
 	</require_modules>
