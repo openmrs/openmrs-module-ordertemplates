@@ -1,14 +1,14 @@
 package org.openmrs.module.ordertemplates.web.resource;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.models.Model;
 import io.swagger.models.ModelImpl;
 import io.swagger.models.properties.BooleanProperty;
 import io.swagger.models.properties.RefProperty;
 import io.swagger.models.properties.StringProperty;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.api.context.Context;
@@ -182,10 +182,31 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 			instance.setTemplate(new ObjectMapper().writeValueAsString(prop));
 		} else {
 			instance.setTemplate(prop.toString());
-			
+
 		}
 	}
-	
+
+	@PropertySetter("drug")
+	public void setDrug(OrderTemplate instance, Object prop) {
+		if (prop instanceof String) {
+			Drug drug = Context.getConceptService().getDrugByUuid((String) prop);
+			instance.setDrug(drug);
+		} else {
+			instance.setDrug((Drug) prop);
+		}
+	}
+
+	@PropertySetter("concept")
+	public void setConcept(OrderTemplate instance, Object prop) {
+		if (prop instanceof String) {
+			Concept concept = Context.getConceptService().getConceptByUuid((String) prop);
+			instance.setConcept(concept);
+		} else {
+			instance.setConcept((Concept) prop);
+		}
+	}
+
+
 	@Override
 	protected PageableResult doSearch(RequestContext requestContext) {
 		Concept concept = null;
