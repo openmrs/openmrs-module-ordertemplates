@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.util.MatcherAssertionErrors.assertThat;
 
 /**
  * @author Arthur D. Mugume, Samuel Male date: 22/09/2021
