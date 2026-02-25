@@ -11,10 +11,6 @@
 	<name>Order Templates OMOD</name>
 	<description>Omod submodule for Order Templates</description>
 
-    <properties>
-        <webservicesRestVersion>3.0.0-SNAPSHOT</webservicesRestVersion>
-    </properties>
-
 	<dependencies>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
