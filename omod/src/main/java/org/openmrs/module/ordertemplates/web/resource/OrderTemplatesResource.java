@@ -30,6 +30,8 @@ import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOp
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -209,6 +211,21 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 
 	@Override
 	protected PageableResult doSearch(RequestContext requestContext) {
+		String drugUuids = requestContext.getParameter("drugs");
+		if (StringUtils.isNotBlank(drugUuids)) {
+			List<String> uuids = new ArrayList<>();
+			for (String uuid : drugUuids.split(",")) {
+				String trimmed = uuid.trim();
+				if (StringUtils.isNotBlank(trimmed)) {
+					uuids.add(trimmed);
+				}
+			}
+			if (uuids.isEmpty()) {
+				return new NeedsPaging<>(Collections.emptyList(), requestContext);
+			}
+			return new NeedsPaging<>(getService().getOrderTemplatesByDrugUuids(uuids, requestContext.getIncludeAll()), requestContext);
+		}
+
 		Concept concept = null;
 		Drug drug = null;
 		String drugUuid = requestContext.getParameter("drug");
@@ -222,6 +239,6 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		OrderTemplateCriteriaBuilder builder = new OrderTemplateCriteriaBuilder();
 		builder.setDrug(drug).setConcept(concept);
 		List<OrderTemplate> orderTemplates = getService().getOrderTemplateByCriteria(builder.build());
-		return new NeedsPaging(orderTemplates, requestContext);
+		return new NeedsPaging<>(orderTemplates, requestContext);
 	}
 }

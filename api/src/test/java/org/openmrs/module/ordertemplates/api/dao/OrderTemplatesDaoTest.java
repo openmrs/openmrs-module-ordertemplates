@@ -19,6 +19,8 @@ import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -106,6 +108,55 @@ public class OrderTemplatesDaoTest extends BaseModuleContextSensitiveTest {
 		assertThat(updated.getDescription(), is("Levonorgestrel order template"));
 	}
 	
+	@Test
+	public void getOrderTemplatesByDrugs_shouldReturnTemplatesForAllGivenDrugs() {
+		Drug abacavir = new Drug(10055);
+		Drug levonorgestrel = new Drug(10056);
+		List<OrderTemplate> results = orderTemplatesDao.getOrderTemplatesByDrugs(Arrays.asList(abacavir, levonorgestrel));
+		assertThat(results.size(), is(2));
+	}
+
+	@Test
+	public void getOrderTemplatesByDrugs_shouldReturnAllTemplatesIncludingRetired() {
+		// drug 10059 has one active template (id=5) and drug 10060 has one retired template (id=6)
+		Drug mebendazole900 = new Drug(10059);
+		Drug mebendazole600 = new Drug(10060);
+		List<OrderTemplate> results = orderTemplatesDao.getOrderTemplatesByDrugs(Arrays.asList(mebendazole900, mebendazole600));
+		assertThat(results.size(), is(2));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void getOrderTemplatesByDrugs_shouldThrowWhenDrugsListIsEmpty() {
+		orderTemplatesDao.getOrderTemplatesByDrugs(Collections.emptyList());
+	}
+
+	@Test
+	public void getOrderTemplatesByDrugUuids_shouldReturnMatchingTemplates() {
+		List<OrderTemplate> results = orderTemplatesDao.getOrderTemplatesByDrugUuids(
+		    Arrays.asList("4e2323fa-5fa0-461f-9b59-6765997d844d", "3e2323fa-6fa0-461b-9b59-6765997d844k"), true);
+		assertThat(results.size(), is(2));
+	}
+
+	@Test
+	public void getOrderTemplatesByDrugUuids_shouldExcludeRetiredWhenFlagIsFalse() {
+		List<OrderTemplate> results = orderTemplatesDao.getOrderTemplatesByDrugUuids(
+		    Arrays.asList("pe2323fa-6fa0-4618-fb59-6765997d844m", "qf2323fa-6fa0-4618-fb59-6765997d844m"), false);
+		assertThat(results.size(), is(1));
+		assertThat(results.get(0).getName(), is("Mebendazole 900mg template"));
+	}
+
+	@Test
+	public void getOrderTemplatesByDrugUuids_shouldIncludeRetiredWhenFlagIsTrue() {
+		List<OrderTemplate> results = orderTemplatesDao.getOrderTemplatesByDrugUuids(
+		    Arrays.asList("pe2323fa-6fa0-4618-fb59-6765997d844m", "qf2323fa-6fa0-4618-fb59-6765997d844m"), true);
+		assertThat(results.size(), is(2));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void getOrderTemplatesByDrugUuids_shouldThrowWhenListIsEmpty() {
+		orderTemplatesDao.getOrderTemplatesByDrugUuids(Collections.emptyList(), false);
+	}
+
 	@Test
 	public void deleteOrderTemplate_shouldRemoveFromDB() {
 		OrderTemplate existing = orderTemplatesDao.getOrderTemplate(1);
