@@ -1,14 +1,14 @@
 package org.openmrs.module.ordertemplates.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
 import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.module.ordertemplates.web.resource.OrderTemplatesResource;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class OrderTemplatesResourceTest extends BaseModuleWebContextSensitiveTes
 	
 	OrderTemplatesResource resource;
 	
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		executeDataSet("testdata/OrderTemplateServiceTest-initialData.xml");
 		resource = new OrderTemplatesResource();

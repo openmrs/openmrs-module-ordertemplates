@@ -10,13 +10,13 @@
 package org.openmrs.module.ordertemplates.api.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.module.ordertemplates.model.OrderTemplate;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
+import org.openmrs.test.jupiter.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -45,7 +45,7 @@ public class OrderTemplatesDaoTest extends BaseModuleContextSensitiveTest {
 	        + "                            \"frequency\": \"160858AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\","
 	        + "                          }" + "                        }";
 	
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		executeDataSet("testdata/OrderTemplateServiceTest-initialData.xml");
 		updateSearchIndex();
@@ -94,7 +94,7 @@ public class OrderTemplatesDaoTest extends BaseModuleContextSensitiveTest {
 		
 		// Replay
 		OrderTemplate existing = orderTemplatesDao.saveOrderTemplate(incoming);
-		Assert.assertNotNull(existing.getId());
+		Assertions.assertNotNull(existing.getId());
 	}
 	
 	@Test
@@ -112,11 +112,11 @@ public class OrderTemplatesDaoTest extends BaseModuleContextSensitiveTest {
 		testOrderTemplate1(existing);
 		orderTemplatesDao.deleteOrderTemplate(existing);
 		existing = orderTemplatesDao.getOrderTemplate(1);
-		Assert.assertNull(existing);
+		Assertions.assertNull(existing);
 	}
 	
 	private static void testOrderTemplate1(OrderTemplate existing) {
-		Assert.assertNotNull(existing);
+		Assertions.assertNotNull(existing);
 		assertThat(existing.getUuid(), is("01b8f6b7-dc0e-4346-b818-f3e9cd24dfdb"));
 		assertThat(existing.getName(), is("Abacavir 300mg template"));
 		assertThat(existing.getDrug().getId(), is(10055));
