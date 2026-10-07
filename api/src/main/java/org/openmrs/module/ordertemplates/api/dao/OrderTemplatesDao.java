@@ -39,11 +39,28 @@ public interface OrderTemplatesDao {
 	
 	/**
 	 * Gets OrderTemplates based on the {@code drug}
-	 * 
+	 *
 	 * @param drug - drug of the OrderTemplate to be returned
 	 * @return the OrderTemplates
 	 */
 	List<OrderTemplate> getOrderTemplatesByDrug(Drug drug);
+
+	/**
+	 * Gets OrderTemplates for all drugs in the given list
+	 *
+	 * @param drugs - list of drugs whose templates should be returned
+	 * @return OrderTemplates whose drug is in {@code drugs}
+	 */
+	List<OrderTemplate> getOrderTemplatesByDrugs(List<Drug> drugs);
+
+	/**
+	 * Gets OrderTemplates for all drug UUIDs in the given list
+	 *
+	 * @param uuids - list of drug UUIDs whose templates should be returned
+	 * @param includeRetired if false, retired templates are excluded
+	 * @return OrderTemplates whose drug uuid is in {@code uuids}
+	 */
+	List<OrderTemplate> getOrderTemplatesByDrugUuids(List<String> uuids, boolean includeRetired);
 	
 	/**
 	 * Gets OrderTemplates based on the {@code concept}

@@ -15,9 +15,8 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
 import org.openmrs.module.ordertemplates.api.dao.OrderTemplatesDao;
 import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
-import org.springframework.transaction.annotation.Transactional;
-
 import org.openmrs.module.ordertemplates.model.OrderTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -55,6 +54,18 @@ public class OrderTemplatesServiceImpl extends BaseOpenmrsService implements Ord
 	@Transactional(readOnly = true)
 	public List<OrderTemplate> getOrderTemplatesByDrug(Drug drug) {
 		return dao.getOrderTemplatesByDrug(drug);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderTemplate> getOrderTemplatesByDrugs(List<Drug> drugs) {
+		return dao.getOrderTemplatesByDrugs(drugs);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderTemplate> getOrderTemplatesByDrugUuids(List<String> uuids, boolean includeRetired) {
+		return dao.getOrderTemplatesByDrugUuids(uuids, includeRetired);
 	}
 	
 	@Override

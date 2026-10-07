@@ -10,6 +10,7 @@ import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
 import org.openmrs.module.ordertemplates.model.OrderTemplate;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Hibernate implementation of the OrderTemplatesDao
@@ -34,14 +35,50 @@ public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 	
 	@Override
 	public List<OrderTemplate> getOrderTemplatesByDrug(Drug drug) {
-		
+
 		if (drug == null) {
 			throw new IllegalArgumentException("Drug is required");
 		}
-		
+
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(OrderTemplate.class);
 		if (drug.getDrugId() != null) {
 			criteria.add(Restrictions.eq("drug", drug));
+		}
+		criteria.addOrder(org.hibernate.criterion.Order.desc("orderTemplateId"));
+		return criteria.list();
+	}
+
+	@Override
+	public List<OrderTemplate> getOrderTemplatesByDrugs(List<Drug> drugs) {
+
+		if (drugs == null || drugs.isEmpty()) {
+			throw new IllegalArgumentException("At least one drug is required");
+		}
+		if (drugs.stream().anyMatch(Objects::isNull)) {
+			throw new IllegalArgumentException("Drug list must not contain null elements");
+		}
+
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(OrderTemplate.class);
+		criteria.add(Restrictions.in("drug", drugs));
+		criteria.addOrder(org.hibernate.criterion.Order.desc("orderTemplateId"));
+		return criteria.list();
+	}
+
+	@Override
+	public List<OrderTemplate> getOrderTemplatesByDrugUuids(List<String> uuids, boolean includeRetired) {
+
+		if (uuids == null || uuids.isEmpty()) {
+			throw new IllegalArgumentException("At least one drug UUID is required");
+		}
+		if (uuids.stream().anyMatch(u -> u == null || u.trim().isEmpty())) {
+			throw new IllegalArgumentException("UUID list must not contain null or blank entries");
+		}
+
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(OrderTemplate.class);
+		criteria.createAlias("drug", "d");
+		criteria.add(Restrictions.in("d.uuid", uuids));
+		if (!includeRetired) {
+			criteria.add(Restrictions.eq("retired", false));
 		}
 		criteria.addOrder(org.hibernate.criterion.Order.desc("orderTemplateId"));
 		return criteria.list();

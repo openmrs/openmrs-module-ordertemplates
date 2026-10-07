@@ -22,6 +22,7 @@ import org.openmrs.module.ordertemplates.model.OrderTemplate;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -84,6 +85,39 @@ public class OrderTemplatesServiceTest extends BaseModuleContextSensitiveTest {
 		assertThat(orderTemplates.size(), is(1));
 	}
 	
+	@Test
+	public void getOrderTemplatesByDrugs_shouldReturnTemplatesForAllGivenDrugs() {
+		Drug abacavir = conceptService.getDrug(10055);
+		Drug levonorgestrel = conceptService.getDrug(10056);
+		Drug paracetamol = conceptService.getDrug(10057);
+		List<OrderTemplate> results = orderTemplatesService.getOrderTemplatesByDrugs(Arrays.asList(abacavir, levonorgestrel, paracetamol));
+		assertThat(results.size(), is(3));
+	}
+
+	@Test
+	public void getOrderTemplatesByDrugs_shouldReturnAllTemplatesIncludingRetired() {
+		// drug 10059 has one active template, drug 10060 has one retired template
+		Drug mebendazole900 = conceptService.getDrug(10059);
+		Drug mebendazole600 = conceptService.getDrug(10060);
+		List<OrderTemplate> results = orderTemplatesService.getOrderTemplatesByDrugs(Arrays.asList(mebendazole900, mebendazole600));
+		assertThat(results.size(), is(2));
+	}
+
+	@Test
+	public void getOrderTemplatesByDrugUuids_shouldExcludeRetiredWhenFlagIsFalse() {
+		List<OrderTemplate> results = orderTemplatesService.getOrderTemplatesByDrugUuids(
+		    Arrays.asList("pe2323fa-6fa0-4618-fb59-6765997d844m", "qf2323fa-6fa0-4618-fb59-6765997d844m"), false);
+		assertThat(results.size(), is(1));
+		assertThat(results.get(0).getName(), is("Mebendazole 900mg template"));
+	}
+
+	@Test
+	public void getOrderTemplatesByDrugUuids_shouldIncludeRetiredWhenFlagIsTrue() {
+		List<OrderTemplate> results = orderTemplatesService.getOrderTemplatesByDrugUuids(
+		    Arrays.asList("pe2323fa-6fa0-4618-fb59-6765997d844m", "qf2323fa-6fa0-4618-fb59-6765997d844m"), true);
+		assertThat(results.size(), is(2));
+	}
+
 	@Test
 	public void getOrderTemplatesByCriteria_shouldIncludedRetired() {
 		
