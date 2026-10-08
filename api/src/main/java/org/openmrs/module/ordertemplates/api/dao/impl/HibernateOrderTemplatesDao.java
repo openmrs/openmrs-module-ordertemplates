@@ -18,6 +18,13 @@ import java.util.List;
  */
 public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 	
+	/**
+	 * Fetching drug and concept in the same select keeps each query to one statement, otherwise
+	 * Hibernate loads every distinct drug in the result with a select of its own.
+	 */
+	private static final String SELECT_ORDER_TEMPLATES = "select ot from OrderTemplate ot left join fetch ot.drug"
+	        + " left join fetch ot.concept";
+	
 	private SessionFactory sessionFactory;
 	
 	@Override
@@ -28,7 +35,7 @@ public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 	@Override
 	public OrderTemplate getOrderTemplateByUuid(String uuid) {
 		return sessionFactory.getCurrentSession()
-		        .createQuery("select ot from OrderTemplate ot where ot.uuid = :uuid", OrderTemplate.class)
+		        .createQuery(SELECT_ORDER_TEMPLATES + " where ot.uuid = :uuid", OrderTemplate.class)
 		        .setParameter("uuid", uuid).uniqueResult();
 	}
 	
@@ -41,11 +48,11 @@ public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 		
 		if (drug.getDrugId() == null) {
 			return sessionFactory.getCurrentSession()
-			        .createQuery("select ot from OrderTemplate ot order by ot.orderTemplateId desc", OrderTemplate.class)
+			        .createQuery(SELECT_ORDER_TEMPLATES + " order by ot.orderTemplateId desc", OrderTemplate.class)
 			        .list();
 		}
 		return sessionFactory.getCurrentSession()
-		        .createQuery("select ot from OrderTemplate ot where ot.drug = :drug order by ot.orderTemplateId desc",
+		        .createQuery(SELECT_ORDER_TEMPLATES + " where ot.drug = :drug order by ot.orderTemplateId desc",
 		            OrderTemplate.class)
 		        .setParameter("drug", drug).list();
 	}
@@ -59,11 +66,11 @@ public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 		
 		if (concept.getConceptId() == null) {
 			return sessionFactory.getCurrentSession()
-			        .createQuery("select ot from OrderTemplate ot order by ot.orderTemplateId desc", OrderTemplate.class)
+			        .createQuery(SELECT_ORDER_TEMPLATES + " order by ot.orderTemplateId desc", OrderTemplate.class)
 			        .list();
 		}
 		return sessionFactory.getCurrentSession()
-		        .createQuery("select ot from OrderTemplate ot where ot.concept = :concept order by ot.orderTemplateId desc",
+		        .createQuery(SELECT_ORDER_TEMPLATES + " where ot.concept = :concept order by ot.orderTemplateId desc",
 		            OrderTemplate.class)
 		        .setParameter("concept", concept).list();
 	}
@@ -76,7 +83,7 @@ public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 		boolean filterByDrug = drug != null && drug.getDrugId() != null;
 		boolean filterByConcept = concept != null && concept.getConceptId() != null;
 		
-		StringBuilder hql = new StringBuilder("select ot from OrderTemplate ot where 1 = 1");
+		StringBuilder hql = new StringBuilder(SELECT_ORDER_TEMPLATES + " where 1 = 1");
 		if (filterByDrug) {
 			hql.append(" and ot.drug = :drug");
 		}
@@ -101,11 +108,11 @@ public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 	@Override
 	public List<OrderTemplate> getAllOrderTemplates(boolean includeRetired) {
 		if (includeRetired) {
-			return sessionFactory.getCurrentSession().createQuery("select ot from OrderTemplate ot", OrderTemplate.class)
+			return sessionFactory.getCurrentSession().createQuery(SELECT_ORDER_TEMPLATES, OrderTemplate.class)
 			        .list();
 		}
 		return sessionFactory.getCurrentSession()
-		        .createQuery("select ot from OrderTemplate ot where ot.retired = false", OrderTemplate.class).list();
+		        .createQuery(SELECT_ORDER_TEMPLATES + " where ot.retired = false", OrderTemplate.class).list();
 	}
 	
 	@Override
