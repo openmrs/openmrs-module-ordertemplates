@@ -1,10 +1,10 @@
 package org.openmrs.module.ordertemplates.api.dao.impl;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
-import org.openmrs.api.db.hibernate.DbSessionFactory;
+import org.openmrs.api.db.hibernate.HibernateUtil;
 import org.openmrs.module.ordertemplates.api.dao.OrderTemplatesDao;
 import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteria;
 import org.openmrs.module.ordertemplates.model.OrderTemplate;
@@ -18,18 +18,25 @@ import java.util.List;
  */
 public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 	
-	private DbSessionFactory sessionFactory;
+	/**
+	 * Fetching drug and concept in the same select keeps each query to one statement, otherwise
+	 * Hibernate loads every distinct drug in the result with a select of its own.
+	 */
+	private static final String SELECT_ORDER_TEMPLATES = "select ot from OrderTemplate ot left join fetch ot.drug"
+	        + " left join fetch ot.concept";
+	
+	private SessionFactory sessionFactory;
 	
 	@Override
 	public OrderTemplate getOrderTemplate(Integer orderTemplateId) {
-		return (OrderTemplate) sessionFactory.getCurrentSession().get(OrderTemplate.class, orderTemplateId);
+		return sessionFactory.getCurrentSession().get(OrderTemplate.class, orderTemplateId);
 	}
 	
 	@Override
 	public OrderTemplate getOrderTemplateByUuid(String uuid) {
-		return (OrderTemplate) sessionFactory.getCurrentSession()
-		        .createQuery("select ot from OrderTemplate ot where ot.uuid = :uuid").setParameter("uuid", uuid)
-		        .uniqueResult();
+		return sessionFactory.getCurrentSession()
+		        .createQuery(SELECT_ORDER_TEMPLATES + " where ot.uuid = :uuid", OrderTemplate.class)
+		        .setParameter("uuid", uuid).uniqueResult();
 	}
 	
 	@Override
@@ -39,12 +46,15 @@ public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 			throw new IllegalArgumentException("Drug is required");
 		}
 		
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(OrderTemplate.class);
-		if (drug.getDrugId() != null) {
-			criteria.add(Restrictions.eq("drug", drug));
+		if (drug.getDrugId() == null) {
+			return sessionFactory.getCurrentSession()
+			        .createQuery(SELECT_ORDER_TEMPLATES + " order by ot.orderTemplateId desc", OrderTemplate.class)
+			        .list();
 		}
-		criteria.addOrder(org.hibernate.criterion.Order.desc("orderTemplateId"));
-		return criteria.list();
+		return sessionFactory.getCurrentSession()
+		        .createQuery(SELECT_ORDER_TEMPLATES + " where ot.drug = :drug order by ot.orderTemplateId desc",
+		            OrderTemplate.class)
+		        .setParameter("drug", drug).list();
 	}
 	
 	@Override
@@ -54,60 +64,72 @@ public class HibernateOrderTemplatesDao implements OrderTemplatesDao {
 			throw new IllegalArgumentException("Concept is required");
 		}
 		
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(OrderTemplate.class);
-		if (concept.getConceptId() != null) {
-			criteria.add(Restrictions.eq("concept", concept));
+		if (concept.getConceptId() == null) {
+			return sessionFactory.getCurrentSession()
+			        .createQuery(SELECT_ORDER_TEMPLATES + " order by ot.orderTemplateId desc", OrderTemplate.class)
+			        .list();
 		}
-		criteria.addOrder(org.hibernate.criterion.Order.desc("orderTemplateId"));
-		return criteria.list();
+		return sessionFactory.getCurrentSession()
+		        .createQuery(SELECT_ORDER_TEMPLATES + " where ot.concept = :concept order by ot.orderTemplateId desc",
+		            OrderTemplate.class)
+		        .setParameter("concept", concept).list();
 	}
 	
 	@Override
 	public List<OrderTemplate> getOrderTemplateByCriteria(OrderTemplateCriteria searchCriteria) {
 		
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(OrderTemplate.class);
 		Concept concept = searchCriteria.getConcept();
 		Drug drug = searchCriteria.getDrug();
+		boolean filterByDrug = drug != null && drug.getDrugId() != null;
+		boolean filterByConcept = concept != null && concept.getConceptId() != null;
 		
-		if (drug != null && drug.getDrugId() != null) {
-			criteria.add(Restrictions.eq("drug", drug));
+		StringBuilder hql = new StringBuilder(SELECT_ORDER_TEMPLATES + " where 1 = 1");
+		if (filterByDrug) {
+			hql.append(" and ot.drug = :drug");
 		}
-		if (concept != null && concept.getConceptId() != null) {
-			criteria.add(Restrictions.eq("concept", concept));
+		if (filterByConcept) {
+			hql.append(" and ot.concept = :concept");
 		}
 		if (!searchCriteria.isIncludeRetired()) {
-			criteria.add(Restrictions.eq("retired", false));
+			hql.append(" and ot.retired = false");
 		}
+		hql.append(" order by ot.orderTemplateId desc");
 		
-		criteria.addOrder(org.hibernate.criterion.Order.desc("orderTemplateId"));
-		return criteria.list();
+		Query<OrderTemplate> query = sessionFactory.getCurrentSession().createQuery(hql.toString(), OrderTemplate.class);
+		if (filterByDrug) {
+			query.setParameter("drug", drug);
+		}
+		if (filterByConcept) {
+			query.setParameter("concept", concept);
+		}
+		return query.list();
 	}
 	
 	@Override
 	public List<OrderTemplate> getAllOrderTemplates(boolean includeRetired) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(OrderTemplate.class);
-		if (!includeRetired) {
-			criteria.add(Restrictions.eq("retired", false));
+		if (includeRetired) {
+			return sessionFactory.getCurrentSession().createQuery(SELECT_ORDER_TEMPLATES, OrderTemplate.class)
+			        .list();
 		}
-		return criteria.list();
+		return sessionFactory.getCurrentSession()
+		        .createQuery(SELECT_ORDER_TEMPLATES + " where ot.retired = false", OrderTemplate.class).list();
 	}
 	
 	@Override
 	public OrderTemplate saveOrderTemplate(OrderTemplate orderTemplate) {
-		sessionFactory.getCurrentSession().saveOrUpdate(orderTemplate);
-		return orderTemplate;
+		return HibernateUtil.saveOrUpdate(sessionFactory.getCurrentSession(), orderTemplate);
 	}
 	
 	@Override
 	public void deleteOrderTemplate(OrderTemplate orderTemplate) {
-		sessionFactory.getCurrentSession().delete(orderTemplate);
+		sessionFactory.getCurrentSession().remove(orderTemplate);
 	}
 	
-	public DbSessionFactory getSessionFactory() {
+	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 	
-	public void setSessionFactory(DbSessionFactory sessionFactory) {
+	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 }

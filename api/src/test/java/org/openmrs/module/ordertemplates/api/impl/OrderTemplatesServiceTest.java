@@ -9,8 +9,8 @@
  */
 package org.openmrs.module.ordertemplates.api.impl;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.api.ConceptService;
@@ -19,7 +19,7 @@ import org.openmrs.api.PatientService;
 import org.openmrs.module.ordertemplates.parameter.OrderTemplateCriteriaBuilder;
 import org.openmrs.module.ordertemplates.api.OrderTemplatesService;
 import org.openmrs.module.ordertemplates.model.OrderTemplate;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
+import org.openmrs.test.jupiter.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class OrderTemplatesServiceTest extends BaseModuleContextSensitiveTest {
 	@Autowired
 	EncounterService encounterService;
 	
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		executeDataSet("testdata/OrderTemplateServiceTest-initialData.xml");
 		updateSearchIndex();

@@ -1,11 +1,12 @@
 package org.openmrs.module.ordertemplates.model;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "order_template")
@@ -35,7 +36,7 @@ public class OrderTemplate extends BaseOpenmrsMetadata {
 	private Drug drug;
 	
 	@Column(name = "template", length = 10000)
-	@Type(type = "text")
+	@JdbcTypeCode(SqlTypes.LONGVARCHAR)
 	private String template;
 	
 	@Override
