@@ -16,6 +16,8 @@ import java.io.IOException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+import java.util.List;
+
 public class OrderTemplatesResourceTest extends BaseModuleWebContextSensitiveTest {
 	
 	@Autowired
@@ -61,4 +63,42 @@ public class OrderTemplatesResourceTest extends BaseModuleWebContextSensitiveTes
 		assertThat(existing, notNullValue());
 		assertThat(existing.getName(), is("Abacavir 300mg template"));
 	}
+
+
+@Test
+public void shouldReturnNoTemplatesForInvalidDrugUuid() {
+    RequestContext context = new RequestContext() {
+        @Override
+        public String getParameter(String name) {
+            if ("drug".equals(name)) {
+                return "00000000-0000-0000-0000-000000000001";
+            }
+            return null;
+        }
+    };
+
+    SimpleObject response = resource.search(context);
+
+    List<?> results = (List<?>) response.get("results");
+    assertThat(results, is(empty()));
+}
+
+@Test
+public void shouldReturnNoTemplatesForInvalidConceptUuid() {
+    RequestContext context = new RequestContext() {
+        @Override
+        public String getParameter(String name) {
+            if ("concept".equals(name)) {
+                return "00000000-0000-0000-0000-000000000002";
+            }
+            return null;
+        }
+    };
+
+    SimpleObject response = resource.search(context);
+
+    List<?> results = (List<?>) response.get("results");
+    assertThat(results, is(empty()));
+}
+
 }

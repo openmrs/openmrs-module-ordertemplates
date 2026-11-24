@@ -30,6 +30,7 @@ import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOp
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -215,9 +216,15 @@ public class OrderTemplatesResource extends DelegatingCrudResource<OrderTemplate
 		String conceptUuid = requestContext.getParameter("concept");
 		if (StringUtils.isNotBlank(drugUuid)) {
 			drug = Context.getConceptService().getDrugByUuid(drugUuid);
+			if (drug == null) {
+				return new NeedsPaging(Collections.<OrderTemplate>emptyList(), requestContext);
+			}
 		}
 		if (StringUtils.isNotBlank(conceptUuid)) {
 			concept = Context.getConceptService().getConceptByUuid(conceptUuid);
+			if (concept == null) {
+				return new NeedsPaging(Collections.<OrderTemplate>emptyList(), requestContext);
+			}
 		}
 		OrderTemplateCriteriaBuilder builder = new OrderTemplateCriteriaBuilder();
 		builder.setDrug(drug).setConcept(concept);
